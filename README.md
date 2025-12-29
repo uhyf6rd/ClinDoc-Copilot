@@ -6,32 +6,29 @@
 
 ## Overview
 
-ClinDoc-Copilot is a research prototype system designed to assist clinicians in generating structured medical records during outpatient consultations. The system integrates real-time speech recognition, large language model (LLM) inference, and rule-based constraints to produce draft clinical documentation that conforms to standard medical record formats.
+ClinDoc-Copilot is a research prototype system designed to assist clinicians in generating structured medical records during outpatient consultations. The system integrates real-time speech recognition and large language model (LLM) capabilities to provide writing assistance that conforms to standard medical record formats.
+
+ClinDoc Copilot is a physician-centered, human-in-the-loop assistant. It provides conversation-grounded ghost text completion, inline underline feedback for terminology normalization and evidence-grounded traceability, and an on-demand right-side AI dialogue sidebar. All assistance is non-binding and requires explicit physician action to be incorporated into the medical record.
 
 This project is developed for **research and educational purposes only**. It is not intended for clinical deployment and should not be used for actual patient care.
 
 ![Comparison of Different HCI Mode in Chinese Clinical Documentation](assets/small.png)
-*Figure 1. Comparison of Different HCI Modes in Chinese Clinical Documentation: (a) Traditional dictation requires post-processing; (b) Form-based input is structured but rigid; (c) ClinDoc-Copilot combines voice input with real-time ghost text suggestions and inline validation.*
+*Figure 1. Comparison of Different HCI Mode in Chinese Clinical Documentation.*
 
 ### Motivation
 
-Clinical documentation remains a significant burden for healthcare providers. Studies indicate that physicians spend approximately **16 minutes per patient** on EHR-related tasks during outpatient visits, with documentation accounting for a substantial portion of this time.
+In Chinese outpatient settings, clinical documentation is a strictly regulated professional activity. Outpatient medical records are legally binding documents subject to routine audits, and physicians bear full legal responsibility for the accuracy, completeness, and clinical validity of documented content.
 
-Existing solutions face key challenges in Chinese clinical settings:
+At the same time, outpatient documentation is completed under time constraints. Physicians must write efficiently while ensuring regulatory compliance and evidence-grounded traceability that links symptoms, examinations, diagnoses, and treatment orders within the record.
 
-- **Commercial ambient AI systems** (e.g., Nuance DAX, Suki) primarily target English-speaking markets
-- **Template-based approaches** lack flexibility for varied clinical presentations  
-- **Direct LLM generation** may produce content inconsistent with actual physician-patient dialogue
-
-ClinDoc-Copilot addresses these gaps by providing **real-time, context-aware suggestions** that physicians can accept, modify, or reject—maintaining clinical autonomy while reducing documentation burden.
+Motivated by these challenges, ClinDoc Copilot is designed as a physician-centered, human-in-the-loop assistant that provides real-time, non-binding writing support while keeping physicians as the sole authors and legal owners of medical records.
 
 ### Key Contributions
 
-- **Hybrid Input Paradigm**: Combines continuous speech recognition with keyboard-triggered ghost text, allowing seamless switching between voice and manual input
-- **Conversation Completeness Detection**: Automatically identifies when sufficient clinical information has been gathered to generate module-specific content
-- **Multi-Agent Coordination**: Specialized agents for conversation summarization, terminology normalization, diagnosis validation, and treatment plan generation
-- **Inline Compliance Checking**: Real-time validation of generated content against conversation context with Grammarly-style underline markers
-- **Modular Architecture**: Separates ASR, LLM inference, and UI concerns for maintainability and extensibility
+- **Conversation-grounded ghost text + tab completion**: Suggestions are grounded in encounter context and inserted only via explicit physician action.
+- **Inline underline feedback**: Yellow underlines support terminology normalization; additional cues prompt review of evidence-grounded compliance for diagnoses and treatment orders.
+- **On-demand AI dialogue sidebar**: A right-side advisory interface that is physician-invoked and does not automatically commit content into the medical record.
+- **Accountability-first interaction design**: Assistance is optional and non-binding, preserving physician authority and responsibility.
 
 ---
 
@@ -46,25 +43,14 @@ ClinDoc-Copilot addresses these gaps by providing **real-time, context-aware sug
 
 | Component | Description |
 |-----------|-------------|
-| **Speech-to-Text** | Real-time transcription using SenseVoice ASR model via WebSocket streaming |
-| **Ghost Text Suggestions** | Inline text completions overlaid on HIS input fields, accept with Tab key |
-| **Conversation Completeness Detection** | Automatic detection of when sufficient information is collected per module |
-| **Multi-Agent Coordination** | Specialized agents for different documentation aspects (summarization, terminology, diagnosis, treatment) |
-| **Terminology Normalization** | Detection and suggestion of standardized medical terms from colloquial expressions |
-| **Inline Compliance Checking** | Grammarly-style underline markers for potential inconsistencies with conversation context |
-| **RAG Integration** | Retrieval-augmented generation using medical record templates and terminology databases |
+| **Speech-to-Text (Transcription)** | Audio recording and transcription are used to construct encounter context for assistance |
+| **Ghost Text + Tab Completion** | Low-contrast inline preview suggestions that physicians can explicitly accept with Tab |
+| **Underline Feedback** | Inline visual cues for terminology normalization and evidence-grounded compliance review |
+| **AI Dialogue Sidebar (On-demand)** | Physician-invoked advisory dialogue that does not auto-insert content |
 
-### Medical Record Modules
+### Medical Record Modules (Implementation)
 
-| Module | Input Source | Generation Trigger |
-|--------|-------------|-------------------|
-| Chief Complaint (主诉) | Voice/keyboard | Symptom + duration pattern detected |
-| History of Present Illness (现病史) | Voice + RAG templates | Completeness threshold reached |
-| Past Medical History (既往史) | Voice | Gender-aware template matching |
-| Physical Examination (体格检查) | Keyboard | Manual trigger |
-| Auxiliary Examination (辅助检查) | Keyboard | Manual trigger |
-| Diagnosis (诊断) | All modules | ICD-10 code matching + LLM inference |
-| Treatment Plan (处置) | Diagnosis + voice | Medication/procedure selection |
+The open-source prototype implements module-specific assistance for common outpatient record sections (e.g., chief complaint, present illness, diagnosis, and treatment). Exact triggering rules and module prompts should be treated as implementation details and may evolve.
 
 ---
 
@@ -74,72 +60,78 @@ ClinDoc-Copilot addresses these gaps by providing **real-time, context-aware sug
 - **Backend**: Python 3.10+, FastAPI, WebSocket
 - **ASR**: SenseVoice (FunASR) with streaming support
 - **LLM**: OpenAI-compatible API (GPT-4o or equivalent)
-- **Vector Database**: ChromaDB for RAG
-- **Embedding**: OpenAI text-embedding or local alternatives
+- **Embedding**: (optional) see Future Work
 
 ---
 
 ## Examples
 
-### Ghost Text Workflow
+The main interaction flow is illustrated in the paper figures.
 
-When the clinician speaks: *"患者说头疼三天了，还有点发烧"* (Patient reports headache for three days with fever)
-
-1. **ASR Transcription**: Real-time display of recognized speech
-2. **Completeness Detection**: System identifies symptom + duration pattern
-3. **Ghost Text Generation**: Suggestion appears in Chief Complaint field:
-
-   ```
-   头痛3天，伴发热
-   ```
-
-4. **User Interaction**: Press **Tab** to accept, continue typing to dismiss
-
-### Terminology Normalization
-
-| Input (Colloquial) | Suggested (Standard) | ICD-10 Reference |
-|--------------------|----------------------|------------------|
-| 肚子疼 | 腹痛 | R10.4 |
-| 拉肚子 | 腹泻 | K59.1 |
-| 心口窝疼 | 胸骨后疼痛 | R07.2 |
+- **Ghost text preview** appears inline as low-contrast text.
+- Physicians explicitly **press Tab to accept**; ignored suggestions disappear without affecting the draft.
+- **Underline feedback** highlights spans for terminology normalization and prompts review for evidence-grounded traceability.
+- The **right-side dialogue sidebar** provides advisory help only when invoked.
 
 ### Inline Compliance Markers
 
-When generated content contains information not mentioned in the conversation:
+ClinDoc Copilot provides underline cues to support:
 
-- **Yellow underline**: Terminology suggestion (replaceable)
-- **Red underline**: Potential inconsistency (requires review)
+- **Terminology normalization** (e.g., highlighting colloquial spans for revision)
+- **Evidence-grounded compliance review** (prompting review when diagnoses or treatment orders appear insufficiently supported by prior documentation)
 
 ![Overview of the ClinDoc Copilot Workflow](assets/main.png)
-*Figure 3. Overview of the ClinDoc-Copilot Workflow.lack text represents content entered by the physician, while gray text indicates suggested completions provided by ClinDoc Copilot. For readers’ convenience, the illustration is in English.*
+*Figure 3. Overview of the ClinDoc Copilot Workflow. Black text represents content entered by the physician, while gray text indicates suggested completions provided by ClinDoc Copilot. For readers’ convenience, the illustration is in English.*
 
 ---
 
 ## Evaluation
 
+This section documents the evaluation **design and metrics only** (no results).
+
+We evaluate ClinDoc Copilot in realistic simulated outpatient documentation scenarios. The evaluation addresses three research questions:
+
+- Whether ClinDoc Copilot improves documentation efficiency.
+- Whether it improves documentation quality and evidence-grounded traceability without introducing hallucination risks.
+- Whether clinicians perceive the system as usable and suitable for real clinical practice.
+
 ### Experimental Setup
 
-We conducted preliminary evaluation with synthetic clinical scenarios covering:
+- **Participants**: 24 total, including 12 licensed outpatient physicians and 12 clinical trainees. Participants covered two clinical systems: Western medicine (WM) and traditional Chinese medicine (TCM).
+- **Tasks and scenarios**: 20 de-identified real clinical cases (10 WM + 10 TCM) adapted into realistic simulated outpatient encounters. A trained actor played the patient following a standardized script.
+- **Conditions**: Within-participant comparison between **Copilot** (ClinDoc Copilot enabled) and **Baseline** (same interface without Copilot assistance).
+- **Ethics**: Informed consent was obtained. Audio recordings were collected for simulated scenarios and did not involve real patient care.
 
-- Common outpatient presentations (upper respiratory infections, digestive complaints)
-- Various documentation modules (chief complaint, present illness, diagnosis)
-- Mixed input modalities (voice-only, keyboard-only, hybrid)
+### Evaluation Metrics
 
-### Metrics
+**Efficiency metrics** (averaged per medical record):
 
-| Metric | Description |
-|--------|-------------|
-| **Documentation Time** | Time from consultation start to record completion |
-| **Edit Distance** | Levenshtein distance between generated and final accepted text |
-| **Acceptance Rate** | Percentage of ghost text suggestions accepted without modification |
-| **Compliance Score** | Accuracy of generated content against conversation ground truth |
+- **Time ($\downarrow$)**: average time to complete one outpatient record.
+- **Keys ($\downarrow$)**: average number of keyboard inputs per record.
+- **Edit ($\downarrow$)**: ghost text edit rate, defined as the proportion of tab-accepted ghost text suggestions that were subsequently modified.
 
-### Limitations of Evaluation
+**Quality and safety metrics** (rubric-based):
 
-- Conducted with simulated scenarios, not real clinical environments
-- Sample size insufficient for statistical significance claims
-- Subjective usability assessment not included in current version
-- Cross-validation with clinical experts pending
+- **TN ($\uparrow$)**: Terminology Normalization.
+- **TR ($\uparrow$)**: Evidence-Grounded Traceability of diagnoses and treatment orders.
+- **SH ($\uparrow$)**: Safety and Hallucination level (higher indicates fewer hallucination issues).
+
+All quality metrics are scored on a five-point scale by two senior physicians in a double-blind manner.
+
+### User Study (Questionnaire)
+
+After completing the documentation tasks, participants complete a post-study questionnaire and brief semi-structured interview. The questionnaire assesses four dimensions (five-point Likert scale):
+
+- **EFF**: efficiency improvement through text auto-completion and AI dialogue.
+- **QUAL**: documentation quality and standardization (e.g., terminology normalization).
+- **TRUST**: trustworthiness of system assistance grounded in encounter context.
+- **ADOPT**: willingness to adopt the system in real outpatient practice.
+
+---
+
+## Future Work
+
+The current open-source prototype does not use retrieval-augmented generation (RAG). Future work may explore adding optional retrieval and embedding-based components (e.g., for template/knowledge access) while preserving physician control and accountability.
 
 ---
 
@@ -220,29 +212,21 @@ This system is a **research prototype** developed for:
 
 If you use this project in your research, please cite:
 
-@inproceedings{clindoc_copilot_2025,
-  title = {ClinDoc-Copilot: Enhancing Efficiency and Clinical Expression Normalization in Chinese Outpatient Settings},
-  author = {},
-  booktitle = {},
-  year = {2025},
-  publisher = {},
-  address = {},
-  doi = {}
+```bibtex
+@inproceedings{clindoc_copilot,
+  title = {ClinDoc Copilot: Enhancing Efficiency and Clinical Expression Normalization in Chinese Outpatient Settings},
+  author = {Dingfeng Jiang and Zhiyang Han and Yi Zhang and Qingying Xiao and Siqi Wu and Yangyang Liu and Zhanchen Dai and Han Yan and Shouwang Dai and Yuzhong Yan and Jianquan Li and Xiang Li and Jiale Han and Fan Bu and Benyou Wang},
+  booktitle = {TODO},
+  year = {TODO},
+  publisher = {TODO},
+  address = {TODO},
+  doi = {TODO}
 }
-
-
-
+```
 
 ## Related Work
 
-ClinDoc-Copilot builds upon and differentiates from existing clinical documentation systems:
-
-| System | Approach | Key Difference |
-|--------|----------|----------------|
-| **Nuance DAX** | Ambient AI, post-visit summarization | ClinDoc-Copilot provides real-time suggestions during consultation |
-| **Suki** | Voice-driven EHR assistant | ClinDoc-Copilot focuses on Chinese clinical terminology and formats |
-| **Dragon Medical** | Dictation + transcription | ClinDoc-Copilot adds ghost text suggestions and compliance checking |
-| **GPT-based generators** | Direct LLM generation | ClinDoc-Copilot constrains output to conversation-grounded content |
+Please refer to the paper for the related-work discussion.
 
 ---
 
@@ -256,7 +240,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 - [FunASR](https://github.com/alibaba-damo-academy/FunASR) for the SenseVoice ASR model
 - [LangChain](https://github.com/langchain-ai/langchain) for LLM orchestration utilities
-- [ChromaDB](https://github.com/chroma-core/chroma) for vector storage
 
 ---
 
