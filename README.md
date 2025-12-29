@@ -222,16 +222,16 @@ If you use this project in your research, please cite:
 
 @inproceedings{clindoc_copilot_2025,
   title = {ClinDoc-Copilot: Enhancing Efficiency and Clinical Expression Normalization in Chinese Outpatient Settings},
-  author = {Han, Zhiyang and Guo, Yuxuan and Lin, Nan},
-  booktitle = {Proceedings of the CHI Conference on Human Factors in Computing Systems},
+  author = {},
+  booktitle = {},
   year = {2025},
-  publisher = {ACM},
-  address = {New York, NY, USA},
-  doi = {10.1145/XXXXXXX.XXXXXXX}
+  publisher = {},
+  address = {},
+  doi = {}
 }
-```
 
----
+
+
 
 ## Related Work
 
