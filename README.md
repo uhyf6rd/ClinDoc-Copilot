@@ -9,10 +9,13 @@
 ClinDoc-Copilot is a research prototype system designed to assist clinicians in generating structured medical records during outpatient consultations. The system integrates real-time speech recognition, large language model (LLM) inference, and rule-based constraints to produce draft clinical documentation that conforms to standard medical record formats.
 
 This project is developed for **research and educational purposes only**. It is not intended for clinical deployment and should not be used for actual patient care.
+![Comparison of Different HCI Mode in Chinese Clinical Documantation](assets/small.png)
+
 
 ### Motivation
 
 Clinical documentation remains a significant burden for healthcare providers, often consuming substantial time during patient encounters. This project explores the feasibility of using LLM-based approaches to reduce documentation overhead while maintaining compliance with medical record standards.
+
 
 ### Key Contributions
 
@@ -35,56 +38,13 @@ Clinical documentation remains a significant burden for healthcare providers, of
 | **RAG Integration** | Retrieval-augmented generation using medical record templates and terminology databases |
 
 ---
+![Overview of the ClinDoc Copilot Components](assets/components.png)
+
+
 
 ## System Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                      Chrome Extension (Frontend)                     │
-├─────────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │
-│  │  Sidepanel  │  │  Offscreen  │  │  Background │  │   Content   │ │
-│  │     UI      │  │   (Audio)   │  │   Router    │  │   Script    │ │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘ │
-│         │                │                │                │        │
-│         └────────────────┴────────────────┴────────────────┘        │
-│                                   │                                  │
-│                          WebSocket / HTTP                            │
-└───────────────────────────────────┼──────────────────────────────────┘
-                                    │
-┌───────────────────────────────────┼──────────────────────────────────┐
-│                       FastAPI Backend Server                         │
-├───────────────────────────────────┼──────────────────────────────────┤
-│                                   ▼                                  │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │                    WebSocket Transcription                       │ │
-│  │         (Audio Streaming → ASR → Text Buffer)                    │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-│                                   │                                  │
-│           ┌───────────────────────┼───────────────────────┐          │
-│           ▼                       ▼                       ▼          │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐      │
-│  │ Conversation    │  │  Ghost Text     │  │   Lint Engine   │      │
-│  │ Summary Agent   │  │    Engine       │  │ (Terminology +  │      │
-│  │                 │  │                 │  │   Compliance)   │      │
-│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘      │
-│           │                    │                    │                │
-│           └────────────────────┼────────────────────┘                │
-│                                ▼                                     │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │                     Multi-Agent Coordinator                      │ │
-│  │  (Diagnosis Agent, Treatment Agent, Terminology Agent, etc.)     │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-│                                │                                     │
-│           ┌────────────────────┼────────────────────┐                │
-│           ▼                    ▼                    ▼                │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐      │
-│  │   LLM Client    │  │   RAG Engine    │  │  Prompt Registry│      │
-│  │  (OpenAI API)   │  │   (ChromaDB)    │  │                 │      │
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘      │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
+![System Architecture](assets/system_architecture.png)
 ### Technology Stack
 
 - **Frontend**: Chrome Extension (Manifest V3), vanilla JavaScript
@@ -117,6 +77,9 @@ The system generates a suggestion for the "Chief Complaint" field:
 | 心口窝疼 | 胸骨后疼痛 |
 
 ---
+
+![Overview of the ClinDoc Copilot Workflow](assets/main.png)
+
 
 ## Installation & Usage
 
