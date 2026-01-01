@@ -1,0 +1,397 @@
+[
+    {
+        "id": "WM_001",
+        "medicine_type": "WM",
+        "gender": "男",
+        "age": 28,
+        "chief_complaint": "转移性右下腹痛伴发热12小时。",
+        "present_illness": "12小时前无明显诱因出现上腹部隐痛，伴恶心、呕吐一次。6小时后疼痛转移并固定于右下腹，呈持续性钝痛，伴发热（T 38.2℃）。无腹泻。",
+        "past_history": "既往体健。否认药物过敏史。",
+        "physical_exam": {
+            "tcm_examination": {},
+            "western_examination": "T 38.5℃。右下腹麦氏点（McBurney点）压痛明显，伴轻度反跳痛及肌紧张，结肠充气试验（+）。"
+        },
+        "auxiliary_exam": "血常规：WBC 14.5×10⁹/L；超声：右下腹回盲部可见一管状低回声区，直径约0.9cm，壁增厚。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "急性化脓性阑尾炎"
+            ]
+        },
+        "treatment_plan": {
+            "western_medicine": "拟行急诊腹腔镜下阑尾切除术；给予头孢西丁+甲硝唑抗感染。",
+            "advice": [
+                "术后早期下床活动，预防肠粘连。"
+            ]
+        }
+    },
+    {
+        "id": "WM_002",
+        "medicine_type": "WM",
+        "gender": "女",
+        "age": 29,
+        "chief_complaint": "尿频、尿急、尿痛伴腰痛2天。",
+        "present_illness": "2天前劳累后出现排尿次数增多，伴灼烧感，随后出现右侧腰痛，伴寒战、发热，体温最高38.8℃。",
+        "past_history": "既往有类似发作史。",
+        "physical_exam": {
+            "tcm_examination": {},
+            "western_examination": "T 38.2℃。右肾区叩击痛（+），膀胱区轻压痛。"
+        },
+        "auxiliary_exam": "尿常规：WBC满视野，白细胞酯酶（+++）；血常规：WBC 13.5×10⁹/L。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "急性肾盂肾炎",
+                "尿路感染"
+            ]
+        },
+        "treatment_plan": {
+            "western_medicine": "经验性使用左氧氟沙星或头孢菌素治疗。",
+            "advice": [
+                "多饮水，勤排尿（冲刷尿道）。",
+                "治疗2周后复查尿常规。"
+            ]
+        }
+    },
+    {
+        "id": "WM_003",
+        "medicine_type": "WM",
+        "gender": "女",
+        "age": 6,
+        "chief_complaint": "全身皮肤皮疹伴瘙痒2天。",
+        "present_illness": "2天前食用海鲜后，躯干及四肢出现大小不等风团，色红，伴剧烈瘙痒。皮疹此起彼伏，消退后不留痕迹。",
+        "past_history": "既往有湿疹史。对“虾蟹”过敏。",
+        "physical_exam": {
+            "tcm_examination": {},
+            "western_examination": "躯干、四肢可见散在红色风团，皮肤划痕征（+）。"
+        },
+        "auxiliary_exam": "血常规：嗜酸性粒细胞升高；过敏原：虾蟹IgE（+++）。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "急性荨麻疹"
+            ]
+        },
+        "treatment_plan": {
+            "western_medicine": "口服氯雷他定糖浆；外用炉甘石洗剂。",
+            "advice": [
+                "避免食用致敏食物。",
+                "如出现呼吸困难立即就医。"
+            ]
+        }
+    },
+    {
+        "id": "WM_004",
+        "medicine_type": "WM",
+        "gender": "女",
+        "age": 66,
+        "chief_complaint": "手关节痛伴晨僵3年。",
+        "present_illness": "3年前出现双手远端指间关节疼痛，晨起关节僵硬，活动约10分钟后缓解。症状反复，受凉后加重。",
+        "past_history": "否认类风湿史。",
+        "physical_exam": {
+            "tcm_examination": {},
+            "western_examination": "双手远端指间关节可见Heberden结节，近端指间关节压痛。无红肿热痛。"
+        },
+        "auxiliary_exam": "ESR、RF、抗CCP抗体均正常。X线：指间关节间隙狭窄，骨质增生。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "手部骨关节炎"
+            ]
+        },
+        "treatment_plan": {
+            "western_medicine": "口服塞来昔布止痛；外用双氯芬酸二乙胺乳胶剂。",
+            "advice": [
+                "注意手部保暖。",
+                "进行手部关节功能锻炼。"
+            ]
+        }
+    },
+    {
+        "id": "WM_005",
+        "medicine_type": "WM",
+        "gender": "女",
+        "age": 22,
+        "chief_complaint": "面色苍白、头晕、乏力3个月。",
+        "present_illness": "3个月前开始感体力下降，活动后心慌气短，伴面色苍白，脱发，指甲变薄。月经量增多，经期延长。",
+        "past_history": "偏食，少吃红肉。",
+        "physical_exam": {
+            "tcm_examination": {},
+            "western_examination": "重度贫血貌，睑结膜苍白。心尖部可闻及2/6级收缩期杂音。指甲呈“反甲”征。"
+        },
+        "auxiliary_exam": "血常规：Hb 65g/L，MCV 70fl（小细胞低色素）；铁蛋白 <10ng/ml。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "缺铁性贫血",
+                "月经过多"
+            ]
+        },
+        "treatment_plan": {
+            "western_medicine": "口服琥珀酸亚铁；维生素C促进吸收。",
+            "advice": [
+                "纠正偏食，增加红肉摄入。",
+                "妇科就诊调理月经。"
+            ]
+        }
+    },
+    {
+        "id": "WM_006",
+        "medicine_type": "WM",
+        "gender": "女",
+        "age": 42,
+        "chief_complaint": "发现血糖升高5年，口干、多饮1周。",
+        "present_illness": "患者5年前体检发现血糖升高，诊断为“2型糖尿病”，平素规律服药。1周前无明显诱因出现口干、多尿，每日饮水量明显增加，伴有容易饥饿、乏力，无视物模糊，无四肢麻木，遂来门诊复查。",
+        "past_history": "有高血压病史3年，血压控制平稳。否认药物过敏史。",
+        "physical_exam": {
+            "tcm_examination": {},
+            "western_examination": "BP 130/85mmHg，BMI 26.5。双肺听诊无异常，双下肢无水肿，足背动脉搏动正常。"
+        },
+        "auxiliary_exam": "随机血糖：14.2mmol/L；糖化血红蛋白（HbA1c）：8.5%；尿糖（++），尿酮体（-）。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "2型糖尿病",
+                "高血压病"
+            ]
+        },
+        "treatment_plan": {
+            "western_medicine": "调整降糖方案：加用达格列净口服；继续服用二甲双胍。",
+            "advice": [
+                "糖尿病饮食控制，减少碳水摄入。",
+                "建议每日餐后散步30分钟，监测空腹及餐后2小时血糖。"
+            ]
+        }
+    },
+    {
+            "id": "WM_007",
+            "medicine_type": "WM",
+            "gender": "男",
+            "age": 45,
+            "chief_complaint": "胃脘胀痛伴嗳气2个月。",
+            "present_illness": "近2个月反复出现上腹部胀痛，以餐后明显，伴有频繁嗳气（打饱嗝）、泛酸，偶尔有烧心感。近期工作压力大，睡眠欠佳，大便基本正常。",
+            "past_history": "既往体健。长期出差，饮食不规律。无药物过敏史。",
+            "physical_exam": {
+                "tcm_examination": {},
+                "western_examination": "剑突下及上腹部有轻压痛，无反跳痛，肝脾肋下未触及。"
+            },
+            "auxiliary_exam": "胃镜检查：胃窦黏膜充血、水肿，可见弥漫性红斑。C13呼气试验：阳性（+）。",
+            "diagnosis": {
+                "tcm_diagnosis": [],
+                "western_diagnosis": [
+                    "慢性非萎缩性胃炎",
+                    "幽门螺杆菌感染"
+                ]
+            },
+            "treatment_plan": {
+                "western_medicine": "幽门螺杆菌四联根除方案（雷贝拉唑+阿莫西林+克拉霉素+枸橼酸铋钾），疗程14天。",
+                "advice": [
+                    "餐具消毒，分餐制，避免交叉感染。",
+                    "停药4周后复查呼气试验。"
+                ]
+            }
+    },
+    {
+            "id": "WM_008",
+            "medicine_type": "WM",
+            "gender": "男",
+            "age": 52,
+            "chief_complaint": "颈粗20年，心悸、乏力1年，加重1个月。",
+            "present_illness": "患者发现颈部增粗已20年，因无不适未予重视。1年前开始出现心悸、手抖、容易出汗、乏力，近1个月症状明显加重，伴有消瘦，遂来门诊求治。",
+            "past_history": "既往体健。否认甲状腺家族史。",
+            "physical_exam": {
+                "tcm_examination": {},
+                "western_examination": "无突眼。甲状腺Ⅱ度肿大，可触及多个结节，质地中等，无触痛。心率90次/分，可闻及期前收缩。"
+            },
+            "auxiliary_exam": "甲状腺超声：双侧叶多发结节，部分血流信号丰富。甲功检测：FT3、FT4升高，TSH降低。",
+            "diagnosis": {
+                "tcm_diagnosis": [],
+                "western_diagnosis": [
+                    "结节性甲状腺肿伴甲状腺功能亢进症"
+                ]
+            },
+            "treatment_plan": {
+                "western_medicine": "口服甲巯咪唑抗甲状腺治疗；普萘洛尔控制心率。",
+                "advice": [
+                    "建议完善甲状腺细针穿刺（FNA）以排除恶性可能。",
+                    "定期复查甲功、血常规及肝功能。"
+                ]
+            }
+    },    
+    {
+                "id": "WM_009",
+                "medicine_type": "WM",
+                "gender": "女",
+                "age": 45,
+                "chief_complaint": "间断干咳3年。",
+                "present_illness": "患者近3年来无明显诱因反复出现干咳，无低热、咯血及盗汗。曾多次服用多种抗生素治疗，症状无明显缓解。",
+                "past_history": "既往体健。否认过敏史。",
+                "physical_exam": {
+                    "tcm_examination": {},
+                    "western_examination": "查体无明显阳性体征，双肺呼吸音清，未闻及干湿性啰音。"
+                },
+                "auxiliary_exam": "胸部X线片：肺纹理清晰，未见明显渗出或占位病变。",
+                "diagnosis": {
+                    "tcm_diagnosis": [],
+                    "western_diagnosis": [
+                        "咳嗽变异型哮喘"
+                    ]
+                },
+                "treatment_plan": {
+                    "western_medicine": "吸入性糖皮质激素联合支气管扩张剂治疗。",
+                    "advice": [
+                        "避免接触过敏原",
+                        "建议行支气管激发试验进一步确认。"
+                    ]
+                }
+    },
+    {
+                "id": "WM_010",
+                "medicine_type": "WM",
+                "gender": "男",
+                "age": 1,
+                "chief_complaint": "烦躁、易激惹、夜惊、多汗4个月。",
+                "present_illness": "婴儿现已4个月，冬季出生，足月顺产。仅母乳喂养，未添加辅食。近日家长发现婴儿多烦躁，易激惹，夜间睡眠不安，多汗。",
+                "past_history": "足月顺产，出生体重正常。",
+                "physical_exam": {
+                    "tcm_examination": {},
+                    "western_examination": "发育正常，未见方颅及肋骨串珠，心肺听诊无异常。"
+                },
+                "auxiliary_exam": "血生化：血钙、血磷、碱性磷酸酶水平均在正常范围。",
+                "diagnosis": {
+                    "tcm_diagnosis": [],
+                    "western_diagnosis": [
+                        "佝偻病早期"
+                    ]
+                },
+                "treatment_plan": {
+                    "western_medicine": "补充维生素D滴剂。",
+                    "advice": [
+                        "多户外活动晒太阳",
+                        "按时添加辅食。"
+                    ]
+                }
+    },
+    {
+                "id": "WM_011",
+                "medicine_type": "WM",
+                "gender": "女",
+                "age": 65,
+                "chief_complaint": "反复头痛、头晕半年，转头时摔倒1次。",
+                "present_illness": "半年内反复头晕。今日晨起在突然转头时突感眩晕、耳鸣，伴恶心呕吐，随后摔倒在地，约2分钟后自行缓解。此前曾有类似发作2次。",
+                "past_history": "颈椎病史。否认高血压病史。",
+                "physical_exam": {
+                    "tcm_examination": {},
+                    "western_examination": "神清，血压正常，颈部活动轻度受限。"
+                },
+                "auxiliary_exam": "X线片：颈5～6椎体后缘可见骨质增生，椎间隙变窄。",
+                "diagnosis": {
+                    "tcm_diagnosis": [],
+                    "western_diagnosis": [
+                        "椎动脉型颈椎病"
+                    ]
+                },
+                "treatment_plan": {
+                    "western_medicine": "口服改善循环及营养神经药物。",
+                    "advice": [
+                        "避免颈部突然剧烈转动",
+                        "物理治疗及佩戴颈托。"
+                    ]
+                }
+    },
+    {
+                "id": "WM_012",
+                "medicine_type": "WM",
+                "gender": "女",
+                "age": 12,
+                "chief_complaint": "下肢青紫2年。",
+                "present_illness": "自10岁起发现下肢皮肤青紫，活动后症状加重，近2年逐渐明显。",
+                "past_history": "出生时发现心脏杂音。",
+                "physical_exam": {
+                    "tcm_examination": {},
+                    "western_examination": "胸骨左缘第2肋间闻及2/6级收缩期杂音，P2亢进。"
+                },
+                "auxiliary_exam": "血气分析：右桡动脉血氧饱和度96%，股动脉血氧饱和度80%。",
+                "diagnosis": {
+                    "tcm_diagnosis": [],
+                    "western_diagnosis": [
+                        "动脉导管未闭"
+                    ]
+                },
+                "treatment_plan": {
+                    "western_medicine": "择期手术或介入封堵治疗。",
+                    "advice": [
+                        "避免重体力活动",
+                        "预防感冒。"
+                    ]
+                }
+    },
+    {
+        "id": "WM_013",
+        "medicine_type": "WM",
+        "gender": "男",
+        "age": 4,
+        "chief_complaint": "反复咳嗽3个月",
+        "present_illness": "患儿3个月来反复咳嗽，痰少，夜间明显，活动后加重，无发热，曾使用抗生素治疗无明显效果。",
+        "past_history": "既往有湿疹史，否认药物过敏史。",
+        "physical_exam": {
+            "tcm_examination": {
+                "inspection": "",
+                "listening_smelling": "",
+                "palpation": ""
+            },
+            "western_examination": "T 36.5℃，P 100次/分，R 20次/分，双肺呼吸音粗，未闻及干湿性啰音。"
+        },
+        "auxiliary_exam": "暂未行肺功能检查。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "咳嗽变异型哮喘"
+            ]
+        },
+        "treatment_plan": {
+            "principle": "",
+            "herbal_formula": {},
+            "western_medicine": "吸入糖皮质激素联合支气管舒张剂",
+            "advice": [
+                "避免接触过敏原",
+                "规律随访",
+                "必要时完善肺功能检查"
+            ]
+        }
+    },
+    {
+        "id": "WM_014",
+        "medicine_type": "WM",
+        "gender": "男",
+        "age": 78,
+        "chief_complaint": "胆囊切除术后第2天出现憋气、痰多、发热",
+        "present_illness": "患者为78岁男性，行胆囊切除术后第2天出现憋气、痰多、发热，伴轻度腹部不适，无明显胸痛、咯血。",
+        "past_history": "既往无特殊慢性病史，否认药物过敏史。",
+        "physical_exam": {
+            "tcm_examination": {
+                "inspection": "",
+                "listening_smelling": "",
+                "palpation": ""
+            },
+            "western_examination": "心率100次/分，呼吸稍促，双肺呼吸音稍粗，未闻及明显干湿性啰音。"
+        },
+        "auxiliary_exam": "血常规示白细胞17×10^9/L，心电图未见明显异常。",
+        "diagnosis": {
+            "tcm_diagnosis": [],
+            "western_diagnosis": [
+                "肺部感染"
+            ]
+        },
+        "treatment_plan": {
+            "principle": "",
+            "herbal_formula": {},
+            "western_medicine": "经验性抗感染治疗，化痰及对症支持治疗",
+            "advice": [
+                "注意呼吸道管理，协助排痰",
+                "监测体温及血象变化",
+                "复查血常规，根据病情调整治疗方案"
+            ]
+        }
+    }
+]
