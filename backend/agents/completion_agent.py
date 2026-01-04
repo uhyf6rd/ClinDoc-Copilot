@@ -5,10 +5,9 @@ import functools
 
 class CompletionAgent:
     def __init__(self):
-        # Use Custom Tool
+
         self.openai_tool = GetOpenAI()
-        
-        # --- Completion Prompt (From Cursor Context) ---
+
         self.complete_prompt = """
 你是一个电子病历自动补全助手。医生正在填写【{field_name}】。
 当前已输入内容如下：
