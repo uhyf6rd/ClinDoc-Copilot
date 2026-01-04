@@ -4,7 +4,6 @@ import functools
 
 class DialogueSummaryAgent:
     def __init__(self):
-        # Use Custom Tool
         self.openai_tool = GetOpenAI()
         
         self.prompt_template = """
@@ -26,24 +25,16 @@ class DialogueSummaryAgent:
 """
 
     async def summarize(self, current_summary: str, new_dialogue: str) -> str:
-        """
-        根据新的对话更新总结
-        """
         if not new_dialogue or not new_dialogue.strip():
             return current_summary
             
         try:
-            # 如果没有之前的总结，则初始化
             if not current_summary:
                 current_summary = "暂无总结。"
-                
-            # Manually format prompt
             prompt_text = self.prompt_template.format(
                 current_summary=current_summary,
                 new_dialogue=new_dialogue
             )
-            
-            # Call Custom Tool (Offload blocking I/O)
             import time
             start_time = time.time()
             loop = asyncio.get_running_loop()
@@ -63,6 +54,4 @@ class DialogueSummaryAgent:
         except Exception as e:
             print(f"总结 Agent 错误: {e}")
             return current_summary
-
-# Singleton instance for simple usage
 summary_agent = DialogueSummaryAgent()

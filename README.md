@@ -85,57 +85,8 @@ ClinDoc Copilot provides underline cues to support:
 
 ---
 
-## Evaluation
 
-This section documents the evaluation **design and metrics only** (no results).
-
-We evaluate ClinDoc Copilot in realistic simulated outpatient documentation scenarios. The evaluation addresses three research questions:
-
-- Whether ClinDoc Copilot improves documentation efficiency.
-- Whether it improves documentation quality and evidence-grounded traceability without introducing hallucination risks.
-- Whether clinicians perceive the system as usable and suitable for real clinical practice.
-
-### Experimental Setup
-
-- **Participants**: 24 total, including 12 licensed outpatient physicians and 12 clinical trainees. Participants covered two clinical systems: Western medicine (WM) and traditional Chinese medicine (TCM).
-- **Tasks and scenarios**: 20 de-identified real clinical cases (10 WM + 10 TCM) adapted into realistic simulated outpatient encounters. A trained actor played the patient following a standardized script.
-- **Conditions**: Within-participant comparison between **Copilot** (ClinDoc Copilot enabled) and **Baseline** (same interface without Copilot assistance).
-- **Ethics**: Informed consent was obtained. Audio recordings were collected for simulated scenarios and did not involve real patient care.
-
-### Evaluation Metrics
-
-**Efficiency metrics** (averaged per medical record):
-
-- **Time ($\downarrow$)**: average time to complete one outpatient record.
-- **Keys ($\downarrow$)**: average number of keyboard inputs per record.
-- **Edit ($\downarrow$)**: ghost text edit rate, defined as the proportion of tab-accepted ghost text suggestions that were subsequently modified.
-
-**Quality and safety metrics** (rubric-based):
-
-- **TN ($\uparrow$)**: Terminology Normalization.
-- **TR ($\uparrow$)**: Evidence-Grounded Traceability of diagnoses and treatment orders.
-- **SH ($\uparrow$)**: Safety and Hallucination level (higher indicates fewer hallucination issues).
-
-All quality metrics are scored on a five-point scale by two senior physicians in a double-blind manner.
-
-### User Study (Questionnaire)
-
-After completing the documentation tasks, participants complete a post-study questionnaire and brief semi-structured interview. The questionnaire assesses four dimensions (five-point Likert scale):
-
-- **EFF**: efficiency improvement through text auto-completion and AI dialogue.
-- **QUAL**: documentation quality and standardization (e.g., terminology normalization).
-- **TRUST**: trustworthiness of system assistance grounded in encounter context.
-- **ADOPT**: willingness to adopt the system in real outpatient practice.
-
----
-
-## Future Work
-
-The current open-source prototype does not use retrieval-augmented generation (RAG). Future work may explore adding optional retrieval and embedding-based components (e.g., for template/knowledge access) while preserving physician control and accountability.
-
----
-
-## Installation & Usage
+## Quick Start
 
 ### Prerequisites
 
@@ -175,64 +126,6 @@ python server.py
 Open `backend/test-copilot-full.html` in Chrome to verify the system is functioning correctly.
 
 ---
-
-## Data & Compliance Statement
-
-### Data Sources
-
-- All demonstration data in this repository is **synthetic or fully de-identified**
-- No real patient data is included or required for system operation
-- Medical terminology databases are derived from publicly available standards
-
-### Intended Use
-
-This system is a **research prototype** developed for:
-
-- Academic research in medical informatics and NLP
-- Educational demonstrations of LLM applications in healthcare
-- Exploration of human-AI collaboration in clinical workflows
-
-### Limitations & Disclaimers
-
-- This system is **NOT** a certified medical device
-- It should **NOT** be used for actual clinical decision-making or patient care
-- Generated content requires review and validation by qualified healthcare professionals
-- The authors make no claims regarding clinical accuracy or safety
-- Users are responsible for compliance with applicable regulations in their jurisdiction
-
-### Ethical Considerations
-
-- LLM-generated medical content may contain errors or hallucinations
-- The system is designed to assist, not replace, clinical judgment
-- Deployment in real clinical settings would require extensive validation and regulatory approval
-
----
-
-## Citation
-
-If you use this project in your research, please cite:
-
-```bibtex
-@inproceedings{clindoc_copilot,
-  title = {ClinDoc Copilot: Enhancing Efficiency and Clinical Expression Normalization in Chinese Outpatient Settings},
-  author = {Dingfeng Jiang and Zhiyang Han and Yi Zhang and Qingying Xiao and Siqi Wu and Yangyang Liu and Zhanchen Dai and Han Yan and Shouwang Dai and Yuzhong Yan and Jianquan Li and Xiang Li and Jiale Han and Fan Bu and Benyou Wang},
-  booktitle = {TODO},
-  year = {TODO},
-  publisher = {TODO},
-  address = {TODO},
-  doi = {TODO}
-}
-```
-
-## Related Work
-
-Please refer to the paper for the related-work discussion.
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 

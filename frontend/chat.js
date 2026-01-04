@@ -1,4 +1,4 @@
-// Chat functionality
+
 console.log('[Chat] Initialized');
 
 (function () {
@@ -11,7 +11,7 @@ console.log('[Chat] Initialized');
         return;
     }
 
-    // Event Listeners
+
     sendBtn.addEventListener('click', (e) => {
         console.log('Send button clicked');
         sendMessage();
@@ -30,15 +30,13 @@ console.log('[Chat] Initialized');
 
         if (!text) return;
 
-        // 1. Add User Message
+
         appendMessage('user', text);
         chatInput.value = '';
 
-        // 2. Call API
         try {
             console.log('Calling API...');
 
-            // Show loading
             const loadingId = showLoading();
 
             const response = await fetch('/api/chat/message', {
@@ -47,7 +45,6 @@ console.log('[Chat] Initialized');
                 body: JSON.stringify({ role: 'user', content: text })
             });
 
-            // Remove loading
             removeLoading(loadingId);
 
             if (response.ok) {
@@ -60,7 +57,7 @@ console.log('[Chat] Initialized');
             }
         } catch (error) {
             console.error('Chat error:', error);
-            // Ensure loading is removed on error too
+
             const existingLoading = document.getElementById('chat-loading-indicator');
             if (existingLoading) existingLoading.remove();
 
@@ -71,14 +68,12 @@ console.log('[Chat] Initialized');
     function showLoading() {
         const id = 'chat-loading-indicator';
         const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-message assistant`; // AI side
+        msgDiv.className = `chat-message assistant`;
         msgDiv.id = id;
 
-        // Bubble
         const bubble = document.createElement('div');
         bubble.className = `chat-bubble assistant`;
 
-        // Dots
         bubble.innerHTML = `
             <div class="typing-indicator">
                 <div class="typing-dot"></div>
@@ -104,7 +99,6 @@ console.log('[Chat] Initialized');
         const msgDiv = document.createElement('div');
         msgDiv.className = `chat-message ${role}`;
 
-        // Create bubble container
         const bubble = document.createElement('div');
         bubble.className = `chat-bubble ${role}`;
         msgDiv.appendChild(bubble);
@@ -115,7 +109,7 @@ console.log('[Chat] Initialized');
         if (role === 'assistant') {
             typeWriter(bubble, text);
         } else {
-            bubble.innerText = text; // User message shows immediately
+            bubble.innerText = text;
             scrollToBottom();
         }
     }
@@ -123,10 +117,10 @@ console.log('[Chat] Initialized');
     function typeWriter(element, text, index = 0, currentText = '') {
         if (index < text.length) {
             currentText += text.charAt(index);
-            // Render markdown on every character (streaming effect)
+
             element.innerHTML = marked.parse(currentText);
 
-            // Smart scroll: Keep the message being typed in view
+
             const container = element.closest('.chat-message');
             if (container) {
                 container.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -136,7 +130,7 @@ console.log('[Chat] Initialized');
 
             setTimeout(() => {
                 typeWriter(element, text, index + 1, currentText);
-            }, 30); // 30ms typing speed
+            }, 30); 
         }
     }
 
@@ -145,7 +139,6 @@ console.log('[Chat] Initialized');
     }
 
     function escapeHtml(text) {
-        // Not used now as we use innerText for safety in typeWriter
         const div = document.createElement('div');
         div.innerText = text;
         return div.innerHTML;

@@ -1,15 +1,15 @@
-# coding: utf-8
+
 import numpy as np
 import openai
 import traceback
 import time
 import json
 import re
-# from .data_construction_process.para import api_base, api_key
+
 
 DEBUG = False
 
-openai.api_key = "sk-..."  # 填写我们给您的apikey
+openai.api_key = "sk-..." 
 openai.api_base = "https:..."
 
 openai.proxy = {
@@ -37,22 +37,7 @@ class GetOpenAI:
                 model=model,
                 messages=messages,
                 stream=False,
-                # max_tokens=7000,
-                # temperature=0.5,
-                # presence_penalty=0,
             )
-            # for event in response:
-            #     if event['choices'][0]['finish_reason'] == 'stop':
-            #         if DEBUG:
-            #             pass
-            #             # print(f'收到的完成数据: {completion}')
-            #         break
-            #     for delta_k, delta_v in event['choices'][0]['delta'].items():
-            #         if DEBUG:
-            #             print(f'流响应数据: {delta_k} = {delta_v}')
-            #         completion[delta_k] += delta_v
-            # messages.append(completion)  # 直接在传入参数 messages 中追加消息
-            # msg = completion['content']  # 解析返回的msg
             msg = response.choices[0].message.content
             return (True, msg)
         except Exception as err:
@@ -65,11 +50,11 @@ class GetOpenAI:
         messages = [{"role": "system", "content": "You are a helpful assistant."},
                     {'role': 'user', 'content': input_msg}]
         for _ in range(3):
-            ret, out_msg = self.__gpt_api_stream(messages, model=model)  # 流模式调用
+            ret, out_msg = self.__gpt_api_stream(messages, model=model) 
             if ret:
                 break
             else:
-                # api 不能频繁请求
+
                 time.sleep(1)
 
         return ret, out_msg

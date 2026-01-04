@@ -6,7 +6,7 @@ import os
 
 router = APIRouter()
 
-# Directory for saved records
+
 SAVED_DIR = "backend/data/output"
 MEDICAL_CASES_FILE = "backend/data/source/medical.json"
 
@@ -20,7 +20,6 @@ def get_experimental_cases():
     try:
         with open(MEDICAL_CASES_FILE, "r", encoding="utf-8") as f:
             cases = json.load(f)
-            # Only return id, gender, and age as requested
             return [{"id": c.get("id"), "gender": c.get("gender"), "age": c.get("age")} for c in cases]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

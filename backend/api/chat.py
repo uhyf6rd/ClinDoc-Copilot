@@ -8,11 +8,7 @@ openai_tool = GetOpenAI()
 
 @router.post("/message", response_model=ChatMessage)
 def chat(message: ChatMessage):
-    """
-    Receive a user message and return an AI response using Real OpenAI.
-    """
-    # Call OpenAI Tool
-    # Note: You might want to pass context here in the future
+
     success, response_text = openai_tool.get_respons(message.content)
     
     if not success:

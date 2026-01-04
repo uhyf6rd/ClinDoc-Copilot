@@ -3,46 +3,42 @@
 body {
     background-color: #f0f2f6;
     font-family: 'SimSun', 'Songti SC', serif;
-    /* Global Songti */
+
     overflow-y: hidden;
 }
 
-/* HIDE SCROLLBAR for cleaner "gray div removed" look */
 ::-webkit-scrollbar {
     width: 0px;
-    /* Hidden */
+
     background: transparent;
 }
 
-/* PAPER STYLES */
+
 .paper-container {
     background: white;
     width: 100%;
-    /* A4 Width at 96 DPI is approx 794px, user had 960px. Let's keep it responsive but strictly ratio'd if possible, or just min-height.
-       User asked for 420:297 ratio. Assuming Portrait (Height > Width).
-       Ratio = 297 width / 420 height = 0.707.
-    */
+
     max-width: 900px;
     aspect-ratio: 297 / 420;
-    /* A3/A4 Portrait Ratio */
+
     margin: 0 auto;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    /* Padding */
+
     padding: 40px 100px;
     font-family: 'SimSun', 'Songti SC', serif;
     color: #333;
-    /* Allow expanding beyond the aspect ratio height */
+
     height: auto;
     min-height: 100%;
-    /* Fallback */
+
     margin-bottom: 40px;
-    /* Visual spacing */
+
 }
 
 .paper-title {
     text-align: center;
     font-size: 26px;
-    /* Larger title */
+
     font-weight: bold;
     margin-bottom: 20px;
     letter-spacing: 4px;
@@ -60,46 +56,45 @@ body {
 .paper-label {
     font-weight: bold;
     display: inline-block;
-    /* Inline with input if needed, but usually top is better for long text. Keeping block for now unless requested layout change for fields */
+
     margin-bottom: 8px;
     color: #000;
     font-size: 16px;
-    /* Matched size */
+
 }
 
-/* Input Styling */
+
 .paper-input {
     width: 100%;
     border: none;
-    /* border-bottom: 1px solid #e2e8f0; Optional: user didn't explicitly ask to remove lines, but "record style" usually implies lines or plain text */
+
     border-bottom: 1px solid #eee;
     outline: none;
     font-family: 'SimSun', 'Songti SC', serif;
     font-size: 16px;
-    /* Matched size */
+
     line-height: 1.4;
-    /* Tighter line height */
+
     padding: 4px 0;
     resize: none;
     overflow: hidden;
     background: transparent;
     transition: border-color 0.2s;
     min-height: 28px;
-    /* Ensure 1 line shows */
+
 }
 
 .paper-input:focus {
     border-bottom: 1px solid #60a5fa;
 }
 
-/* ACTIONS COLUMN - Buttons */
 .action-btn {
     width: 100%;
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 14px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    /* Keep UI font for buttons */
+
     font-weight: 500;
     transition: all 0.2s;
     display: flex;
@@ -121,7 +116,7 @@ body {
     background-color: #2563EB;
 }
 
-/* RIGHT PANEL - Keep UI Font */
+
 .panel-container {
     background: white;
     height: 95vh;
@@ -132,25 +127,25 @@ body {
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     position: relative;
-    /* Ensure children can be absolute relative to this */
+
 }
 
-/* TABS */
+
 .tab-header {
     display: flex;
     border-bottom: 1px solid #e2e8f0;
     padding: 0;
-    /* Remove padding to allow full edge-to-edge clickability if wanted, or keep small */
+
     gap: 0;
-    /* Remove gap */
+
     background-color: #fff;
 }
 
 .tab-item {
     flex: 1;
-    /* Distribute evenly */
+
     text-align: center;
-    /* Center text */
+
     padding: 14px 0;
     font-size: 14px;
     color: #64748b;
@@ -173,32 +168,32 @@ body {
     background-color: #3b82f6;
 }
 
-/* --- Ghost Text Overlay System --- */
+
 .ghost-wrapper {
     position: relative;
     width: 100%;
 }
 
-/* The textarea itself (Foreground) */
+
 .ghost-wrapper textarea {
     position: relative;
     z-index: 2;
     background: transparent;
-    /* Transparent to show backdrop */
+
     width: 100%;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
     padding: 8px;
-    /* Must match backdrop exactly */
+
     border: 1px solid #e2e8f0;
     border-radius: 4px;
     resize: none;
     overflow: hidden;
-    /* Auto-resize handles height */
+
 }
 
-/* The backdrop (Background) */
+
 .ghost-backdrop {
     position: absolute;
     top: 0;
@@ -207,34 +202,34 @@ body {
     width: 100%;
     height: 100%;
     padding: 8px;
-    /* Must match textarea exactly */
+
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
     border: 1px solid transparent;
-    /* Match border width for alignment */
+
     white-space: pre-wrap;
-    /* Wrap like textarea */
+
     word-wrap: break-word;
     color: transparent;
-    /* Hide user text in backdrop, only show ghost suffix */
+
     pointer-events: none;
-    /* Let clicks pass through to textarea */
+
     overflow: hidden;
 }
 
-/* The actual Ghost suggestion text */
+
 .ghost-text {
     color: #94a3b8;
-    /* Gray */
+
     opacity: 0.7;
     font-style: italic;
 }
 
-/* RECORDER CARD */
+
 .recorder-card {
     background-color: #dbeafe;
-    /* Blue-100 */
+
     border-radius: 16px;
     padding: 24px;
     display: flex;
@@ -267,7 +262,7 @@ body {
     margin-right: 6px;
 }
 
-/* CHAT STYLES */
+
 .chat-message {
     display: flex;
     align-items: flex-end;
@@ -283,11 +278,9 @@ body {
     justify-content: flex-start;
 }
 
-/* Bubbles */
-/* Bubbles */
 .chat-bubble {
     max-width: 90%;
-    /* Increased width */
+
     padding: 10px 16px;
     font-size: 14px;
     line-height: 1.5;
@@ -297,9 +290,9 @@ body {
 
 .chat-bubble.user {
     background-color: #3B82F6;
-    /* User set Blue */
+
     color: #ffffff;
-    /* User set Black */
+
     border-radius: 12px 12px 0 12px;
 }
 
@@ -310,7 +303,6 @@ body {
     border: 1px solid #e2e8f0;
 }
 
-/* Custom Scrollbar for Chat History */
 #chat-history::-webkit-scrollbar {
     width: 6px;
 }
@@ -321,16 +313,15 @@ body {
 
 #chat-history::-webkit-scrollbar-thumb {
     background-color: rgba(156, 163, 175, 0.5);
-    /* Gray-400 with opacity */
+
     border-radius: 3px;
 }
 
 #chat-history::-webkit-scrollbar-thumb:hover {
     background-color: rgba(107, 114, 128, 0.8);
-    /* Gray-500 */
+
 }
 
-/* Markdown Styles within Chat Bubble */
 .chat-bubble p {
     margin-bottom: 0.5em;
 }
@@ -350,9 +341,6 @@ body {
     font-weight: 600;
 }
 
-/* End of Chat Styles */
-
-/* Chat Loading Animation */
 .typing-indicator {
     display: flex;
     align-items: center;
@@ -389,11 +377,6 @@ body {
     }
 }
 
-/* ====================================================================
-   TERMINOLOGY CHECKER STYLES
-   ==================================================================== */
-
-/* Terminology underline layer (sits behind textarea for visual display) */
 .terminology-underline-layer {
     position: absolute;
     top: 0;
@@ -413,7 +396,6 @@ body {
     color: transparent;
 }
 
-/* Terminology interaction layer (sits above textarea to capture mouse events) */
 .terminology-interaction-layer {
     position: absolute;
     top: 0;
@@ -431,48 +413,44 @@ body {
     pointer-events: none;
     overflow: hidden;
     color: transparent;
-    /* Text must be invisible */
+
 }
 
-/* Underlined problematic text */
+
 .term-underline {
     text-decoration: underline;
     text-decoration-color: #f59e0b;
-    /* User Request: Orange-Yellow */
+
     text-decoration-style: solid;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
-    /* Added gap between text and underline */
+
     color: inherit;
 }
 
-/* Interactive span on the interaction layer */
+
 .term-interactive {
     pointer-events: auto;
-    /* Enable mouse events on underlined terms */
+
     cursor: pointer;
     color: transparent !important;
 }
 
-/* Ensure interactive layer highlighted spans remain transparent */
 .terminology-interaction-layer .term-highlighted {
     background-color: transparent !important;
     color: transparent !important;
 }
 
-/* Highlighted text on hover (only on visual underline layer) */
+
 .term-highlighted {
     background-color: rgba(253, 186, 116, 0.4);
-    /* User Request: Light Orange */
-    /* Semi-transparent to not fully block text underneath */
+
     padding: 3px 0;
-    /* Increased from 2px to make highlight taller */
-    /* Add vertical spacing */
+
     line-height: 1.6;
-    /* Increase line height for better spacing */
+
 }
 
-/* Terminology tooltip */
 .terminology-tooltip {
     position: fixed;
     z-index: 9999;
@@ -489,7 +467,7 @@ body {
     white-space: nowrap;
 }
 
-/* Suggestion (clickable) */
+
 .term-tooltip-suggestion {
     padding: 8px 12px;
     cursor: pointer;
@@ -503,7 +481,7 @@ body {
     background-color: #dbeafe;
 }
 
-/* Ignore button */
+
 .term-tooltip-ignore {
     padding: 6px 12px;
     cursor: pointer;
@@ -515,7 +493,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    /* Increased from 4px to give more space between X and text */
+
 }
 
 .term-tooltip-ignore:hover {
@@ -523,12 +501,11 @@ body {
     color: #374151;
 }
 
-/* EXPERIMENTAL CASES MODAL */
 .case-modal {
     position: absolute;
     top: 114px;
     left: 8px;
-    /* Offset to show rounded corners clearly */
+
     right: 8px;
     bottom: 8px;
     background: white;
@@ -564,7 +541,7 @@ body {
     font-weight: 700;
     font-size: 15px;
     color: #334155;
-    /* Insurance for top-level header background radius */
+
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
 }
@@ -584,7 +561,7 @@ body {
     justify-content: space-between;
     align-items: center;
     border: 1px solid #cbd5e1;
-    /* More distinct border */
+
     background: #fff;
     margin-bottom: 10px;
 }
@@ -621,7 +598,6 @@ body {
     color: #64748b;
 }
 
-/* SETTINGS TAB STYLES */
 .settings-item {
     display: flex;
     justify-content: space-between;
@@ -640,7 +616,6 @@ body {
     color: #475569;
 }
 
-/* iOS Style Switch */
 .switch {
     position: relative;
     display: inline-block;
@@ -697,7 +672,6 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
-/* Toast Notification */
 .toast-notification {
     position: fixed;
     top: 20px;
@@ -707,9 +681,9 @@ input:checked+.slider:before {
     border-radius: 8px;
     color: white;
     font-weight: bold;
-    /* User Request: Bold */
+
     font-family: "Microsoft YaHei", sans-serif;
-    /* User Request: Microsoft YaHei */
+
     font-size: 14px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 10000;
@@ -728,31 +702,30 @@ input:checked+.slider:before {
 
 .toast-success {
     background-color: #10b981;
-    /* Green-500 */
+
 }
 
 
-/* --- AI Suggestion Badge & Tooltip --- */
 .ghost-wrapper {
     position: relative;
-    /* Ensure badges are absolute to this */
+
 }
 
 .ai-suggestion-badge {
     position: absolute;
     right: 0;
     top: -32px;
-    /* Move above text box */
+
     background: #eff6ff;
     color: #3b82f6;
     padding: 4px 10px;
-    /* Smaller padding */
+
     border-radius: 20px;
     font-size: 11px;
-    /* Smaller font */
+
     font-weight: 600;
     cursor: pointer;
-    /* box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1); */
+
     z-index: 20;
     display: flex;
     align-items: center;
@@ -769,10 +742,10 @@ input:checked+.slider:before {
     box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
     border-color: #3b82f6;
     z-index: 100;
-    /* Ensure tooltip overlays subsequent elements */
+
 }
 
-/* Invisible bridge to prevent tooltip from closing when moving mouse */
+
 .ai-suggestion-badge::after {
     content: '';
     position: absolute;
@@ -780,7 +753,7 @@ input:checked+.slider:before {
     left: 0;
     right: 0;
     height: 10px;
-    /* Bridge the 10% gap (approx) or more */
+
     background: transparent;
 }
 
@@ -793,7 +766,7 @@ input:checked+.slider:before {
     background: white;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    /* Slightly smaller radius */
+
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     min-width: 200px;
     max-width: 600px;
@@ -802,7 +775,7 @@ input:checked+.slider:before {
     word-wrap: break-word;
     z-index: 30;
     font-family: "Microsoft YaHei", sans-serif;
-    /* User Request: Tooltip Font */
+
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(10px) scale(0.95);
     transform-origin: top right;
@@ -820,7 +793,7 @@ input:checked+.slider:before {
 
 .suggestion-item {
     padding: 8px 12px;
-    /* More compact */
+
     font-size: 13px;
     color: #4b5563;
     cursor: pointer;
@@ -830,7 +803,7 @@ input:checked+.slider:before {
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* Ellipsis if too long */
+
 }
 
 .suggestion-item:last-child {
@@ -840,5 +813,4 @@ input:checked+.slider:before {
 .suggestion-item:hover {
     background-color: #f0f9ff;
     color: #0369a1;
-    /* padding-left: 20px; <-- Removed per user request */
 }

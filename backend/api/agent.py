@@ -13,7 +13,7 @@ class SummaryResponse(BaseModel):
 
 @router.post("/summary", response_model=SummaryResponse)
 async def update_summary(request: SummaryRequest):
-    # ... existing code ...
+
     try:
         updated_text = await summary_agent.summarize(
             current_summary=request.current_summary,
@@ -24,7 +24,7 @@ async def update_summary(request: SummaryRequest):
         print(f"API Error: {e}")
         return SummaryResponse(updated_summary=request.current_summary)
 
-# --- Completion / Ghost Text Endpoints ---
+
 
 from backend.agents.completion_agent import completion_agent
 
@@ -38,12 +38,11 @@ class CompletionRequest(BaseModel):
 
 @router.post("/draft")
 async def generate_draft(req: DraftRequest):
-    # 1. Generate Strict Draft (based on Doctor's explicit words)
+
     draft_text = await completion_agent.generate_draft(req.summary, req.field_id)
     
     response = {"draft": draft_text, "suggestions": []}
-    
-    # 2. If applicable, generate AI suggestions (Inference)
+
     if req.field_id in ["diagnosis", "orders"]:
         suggestions = await completion_agent.generate_suggestions(req.summary, req.field_id)
         response["suggestions"] = suggestions

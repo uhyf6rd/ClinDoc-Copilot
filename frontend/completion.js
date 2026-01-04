@@ -1,11 +1,11 @@
-// --- Ghost Text / Auto-Completion Logic ---
+
 
 let ghostDebounceTimer = null;
 const ghostMap = new Map();
 const touchedFields = new Set();
 const draftQueue = new BoundedRequestQueue(1);
 
-// BoundedRequestQueue Class
+
 function BoundedRequestQueue(concurrency) {
     this.concurrency = concurrency;
     this.active = 0;
@@ -37,10 +37,9 @@ BoundedRequestQueue.prototype.process = async function () {
 
 function initGhostText() {
     document.querySelectorAll('.paper-input').forEach(el => {
-        // 1. Input Event
+
         el.addEventListener('input', (e) => {
-            // NOTE: usageMetrics and fieldLastValues are accessed from script.js globals
-            // We assume script.js runs first and defines these.
+
 
             touchedFields.add(el.id);
             clearGhost(el.id);
@@ -54,20 +53,17 @@ function initGhostText() {
             }
         });
 
-        // 2. Scroll Sync
         el.addEventListener('scroll', () => {
             const backdrop = document.getElementById(`gh_${el.id}`);
             if (backdrop) backdrop.scrollTop = el.scrollTop;
         });
 
-        // 3. Clear handlers
         ['keyup', 'click', 'focus'].forEach(evtType => {
             el.addEventListener(evtType, () => {
                 if (el.selectionEnd !== el.value.length) clearGhost(el.id);
             });
         });
 
-        // 4. Tab Accept
         el.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 if (appSettings.ghostText) {
@@ -89,21 +85,15 @@ function initGhostText() {
 let stateVersion = 0;
 
 window.resetGhostState = function () {
-    stateVersion++; // Invalidate pending async operations
+    stateVersion++;
     clearTimeout(ghostDebounceTimer);
     ghostMap.clear();
     touchedFields.clear();
 
-    // Clear UI for all potential fields
     const fields = ['main_complaint', 'history_present_illness', 'past_history', 'physical_exam', 'auxiliary_exam', 'diagnosis', 'orders'];
     fields.forEach(fid => {
-        // Clear Ghost Text
-        renderGhost(fid, "", "");
 
-        // Clear Suggestions
-        // if (typeof renderSuggestionsForField === 'function') {
-        //     renderSuggestionsForField(fid, []);
-        // }
+        renderGhost(fid, "", "");
     });
     console.log('[GhostText] State Reset (v' + stateVersion + ')');
 };
@@ -117,21 +107,7 @@ function clearGhost(fieldId) {
 function acceptGhost(fieldId, suggestion) {
     const el = document.getElementById(fieldId);
 
-    // Update Global Metrics from script.js
     if (typeof isGhostInsertion !== 'undefined') {
-        // We set the global variable if possible, but primitives are passed by value if not on window.
-        // script.js defines: let isGhostInsertion = false;
-        // Since it's in top scope of a script, it is not on window.
-        // We might need to rely on script.js exposing a setter or assuming we can write to it if in same scope.
-        // Actually, just assigning to it might work if strict mode isn't blocking it and it's in scope, 
-        // but it won't be in scope because it's a separate file.
-        // FIX: We need script.js to expose these on window or similar.
-        // For now, let's assume `window.isGhostInsertion` or we need to refactor script.js to attach to window.
-
-        // Let's assume script.js will be modified to `window.isGhostInsertion = ...` or similar.
-        // Or we use the fact that `var` creates properties on window. `let` does not.
-
-        // Correction: We will update script.js to make these vars `var` or `window.XXX`.
         window.isGhostInsertion = true;
     }
 
@@ -152,7 +128,6 @@ function renderGhost(fieldId, userText, suggestion) {
     const el = document.getElementById(fieldId);
     if (!suggestion || !appSettings.ghostText) {
         backdrop.innerHTML = "";
-        // Revert height to fit user content only
         if (el) {
             el.style.height = 'auto';
             el.style.height = el.scrollHeight + 'px';
@@ -169,10 +144,9 @@ function renderGhost(fieldId, userText, suggestion) {
     if (el) {
         backdrop.scrollTop = el.scrollTop;
 
-        // Auto-expand textarea if ghost text exceeds current height
         if (backdrop.scrollHeight > el.clientHeight) {
             el.style.height = backdrop.scrollHeight + 'px';
-            backdrop.style.height = el.style.height; // Sync backdrop height
+            backdrop.style.height = el.style.height; 
         }
     }
 }
@@ -197,7 +171,7 @@ function debouncedFetchCompletion(fieldId, text) {
     ghostDebounceTimer = setTimeout(async () => {
         const currentVersion = stateVersion;
         try {
-            // Accessing API_BASE_AGENT from script.js
+
             const res = await fetch(`${API_BASE_AGENT}/agent/complete`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -205,7 +179,7 @@ function debouncedFetchCompletion(fieldId, text) {
             });
             if (res.ok) {
                 const data = await res.json();
-                if (stateVersion !== currentVersion) return; // Stale request
+                if (stateVersion !== currentVersion) return;
 
                 if (data.completion) {
                     if (document.activeElement !== el) return;
@@ -229,12 +203,11 @@ function triggerDraftsForEmptyFields() {
     const fields = ['main_complaint', 'history_present_illness', 'past_history', 'physical_exam', 'auxiliary_exam', 'diagnosis', 'orders'];
     fields.forEach((fid) => {
         const el = document.getElementById(fid);
-        // Accessing currentSummary from script.js (global)
         if (!el || touchedFields.has(fid) || el.value.trim() !== "") return;
 
         const currentVersion = stateVersion;
         draftQueue.add(async () => {
-            if (stateVersion !== currentVersion) return; // Cancel if reset happened waiting in queue
+            if (stateVersion !== currentVersion) return; 
             try {
                 const res = await fetch(`${API_BASE_AGENT}/agent/draft`, {
                     method: 'POST',
@@ -243,7 +216,7 @@ function triggerDraftsForEmptyFields() {
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    if (stateVersion !== currentVersion) return; // Cancel if reset happened during fetch
+                    if (stateVersion !== currentVersion) return;
                     if (el.value.trim() !== "" || touchedFields.has(fid)) return;
 
                     let draft = data.draft;
@@ -252,9 +225,8 @@ function triggerDraftsForEmptyFields() {
                         renderGhost(fid, "", draft);
                     }
 
-                    // Render AI Suggestions if available (Diagnosis & Orders)
+
                     if (data.suggestions && data.suggestions.length > 0) {
-                        // Delegated to suggestion.js
                         if (typeof renderSuggestionsForField === 'function') {
                             renderSuggestionsForField(fid, data.suggestions);
                         }
@@ -267,13 +239,8 @@ function triggerDraftsForEmptyFields() {
 
 function isValidDraft(text) {
     if (!text) return false;
-    // Remove wrapping quotes and whitespace
     const clean = text.trim().replace(/^['"]+|['"]+$/g, '');
     if (clean.length === 0) return false;
-
-    // Reject if it matches specific rejection phrases (case insensitive)
-    // Matches "空字符串", "没有相关信息", "无相关信息", "无法提取", "无法提供", "根据对话总结"
-    // Also consider "抱歉，我无法..."
     const rejectPattern = /空字符串|没有相关信息|无相关信息|无法提取|无法提供|抱歉.*无法|根据对话总结/i;
     if (rejectPattern.test(clean)) return false;
 

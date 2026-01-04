@@ -6,31 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical AI Copilot</title>
     <link rel="icon" href="/static/icon.png">
-    <!-- TailwindCSS -->
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Noto Serif SC for Paper Feel -->
+
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Marked.js for Markdown Rendering -->
+
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- Custom CSS -->
+
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-    <!-- MAIN GRID: Paper (Flexible) | Panel (Fixed 400px) -->
     <div class="grid grid-cols-[1fr_400px] h-screen p-6 gap-6">
 
-        <!-- COL 1: PAPER -->
         <div class="overflow-y-auto pr-2">
             <div class="paper-container">
                 <div class="paper-title">初诊病历记录</div>
                 <div class="paper-line"></div>
 
-                <!-- Info Row: Align with other fields, Gender and Age closer -->
                 <div class="flex mb-4 gap-32">
                     <div class="flex items-center gap-2">
                         <span class="paper-label" style="margin-bottom: 0;">性 别:</span>
@@ -42,49 +39,41 @@
                     </div>
                 </div>
 
-                <!-- Fields -->
-                <!-- Auto-expanding textareas -->
-                <!-- Main Complaint -->
                 <div class="paper-label">主诉：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_main_complaint" class="ghost-backdrop"></div>
                     <textarea id="main_complaint" rows="1" class="paper-input w-full"></textarea>
                 </div>
 
-                <!-- HPI -->
                 <div class="paper-label mt-4">现病史：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_history_present_illness" class="ghost-backdrop"></div>
                     <textarea id="history_present_illness" rows="2" class="paper-input w-full"></textarea>
                 </div>
 
-                <!-- Past History -->
                 <div class="paper-label mt-4">既往史：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_past_history" class="ghost-backdrop"></div>
                     <textarea id="past_history" rows="1" class="paper-input w-full"></textarea>
                 </div>
 
-                <!-- Physical Exam -->
                 <div class="paper-label mt-4">体格检查：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_physical_exam" class="ghost-backdrop"></div>
                     <textarea id="physical_exam" rows="2" class="paper-input w-full"></textarea>
                 </div>
 
-                <!-- Auxiliary Exam -->
                 <div class="paper-label mt-4">辅助检查：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_auxiliary_exam" class="ghost-backdrop"></div>
                     <textarea id="auxiliary_exam" rows="2" class="paper-input w-full"></textarea>
                 </div>
 
-                <!-- Diagnosis -->
                 <div class="paper-label mt-4">诊断：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_diagnosis" class="ghost-backdrop"></div>
                     <textarea id="diagnosis" rows="3" class="paper-input w-full"></textarea>
-                    <!-- AI Suggestion Badge -->
+
                     <div id="sug_diagnosis" class="ai-suggestion-badge hidden">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span class="badge-text">AI 诊断</span>
@@ -96,7 +85,7 @@
                 <div class="ghost-wrapper">
                     <div id="gh_orders" class="ghost-backdrop"></div>
                     <textarea id="orders" rows="4" class="paper-input w-full"></textarea>
-                    <!-- AI Suggestion Badge -->
+
                     <div id="sug_orders" class="ai-suggestion-badge hidden">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span class="badge-text">AI 医嘱</span>
@@ -105,20 +94,19 @@
                 </div>
 
             </div>
-            <!-- Bottom Spacer -->
+
             <div class="h-20"></div>
         </div>
 
-        <!-- COL 2: ASSISTANT PANEL -->
+
         <div class="panel-container shadow-sm">
-            <!-- Header -->
+
             <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-white">
                 <div class="font-bold text-gray-800 text-lg">
                     <i class="fa-solid fa-robot text-blue-500 mr-2"></i>病历 Copilot
                 </div>
             </div>
 
-            <!-- ACTION BUTTONS (Moved here) -->
             <div class="px-5 py-3 flex gap-3 bg-gray-50 border-b border-gray-100">
                 <button onclick="loadDemoData()" class="action-btn btn-secondary flex-1">
                     <i class="fa-solid fa-folder-open"></i> 打开病例
@@ -128,7 +116,6 @@
                 </button>
             </div>
 
-            <!-- Tabs -->
             <div class="tab-header">
                 <div class="tab-item active" onclick="switchTab('record')"><i
                         class="fa-solid fa-microphone mr-1"></i>录音转录</div>
@@ -136,9 +123,8 @@
                 <div class="tab-item" onclick="switchTab('settings')"><i class="fa-solid fa-gear mr-1"></i>设置</div>
             </div>
 
-            <!-- Tab Content: Record -->
             <div id="tab-record" class="p-5 flex-1 overflow-y-auto">
-                <!-- Recorder UI -->
+
                 <div class="recorder-card">
                     <div>
                         <div
@@ -158,7 +144,7 @@
 
 
 
-                <!-- AI Summary Stream -->
+
                 <div id="ai-summary-wrapper">
                     <div class="text-sm text-blue-500 font-medium mb-2 uppercase tracking-wide flex justify-between">
                         <span>AI 实时总结</span>
@@ -171,12 +157,12 @@
                 </div>
             </div>
 
-            <!-- Tab Content: Chat (Hidden by default) -->
+ 
             <div id="tab-chat" class="hidden flex-1 flex flex-col relative h-full min-h-0">
                 <div class="flex-1 overflow-y-auto p-4 min-h-0" id="chat-history">
-                    <!-- Messages go here -->
+
                 </div>
-                <!-- Input Area -->
+
                 <div class="p-4 border-t border-gray-100 bg-white">
                     <div class="flex items-center gap-2">
                         <input id="chat-input-field" type="text" placeholder="输入问题..."
@@ -189,7 +175,6 @@
                 </div>
             </div>
 
-            <!-- Tab Content: Settings (Hidden) -->
             <div id="tab-settings" class="hidden p-5">
                 <div class="settings-card">
                     <div class="settings-item">
@@ -216,14 +201,13 @@
                 </div>
             </div>
 
-            <!-- Experimental Case Modal -->
             <div id="case-modal" class="case-modal">
                 <div class="case-modal-header">
                     <span>实验病例选择</span>
                     <i class="fa-solid fa-xmark close-modal-btn" onclick="closeCaseModal()"></i>
                 </div>
                 <div id="case-modal-body" class="case-modal-body">
-                    <!-- Cases will be injected here -->
+
                     <div class="p-4 text-center text-gray-400 text-sm">正在加载病例...</div>
                 </div>
             </div>
@@ -232,7 +216,6 @@
 
     </div>
 
-    <!-- Logic Script -->
     <script src="/static/completion.js"></script>
     <script src="/static/suggestion.js"></script>
     <script src="/static/terminology.js"></script>

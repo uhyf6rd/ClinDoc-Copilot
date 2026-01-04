@@ -7,7 +7,7 @@ class UsageMetrics(BaseModel):
     ghost_text_chars: int = 0
     manual_input_chars: int = 0
     deleted_chars: int = 0
-    total_chars: int = 0  # Excluding gender/age
+    total_chars: int = 0
 
 class MedicalRecord(BaseModel):
     gender: str = ""
@@ -22,5 +22,5 @@ class MedicalRecord(BaseModel):
     metrics: UsageMetrics = UsageMetrics()
     
 class ChatMessage(BaseModel):
-    role: str # "user" or "assistant"
+    role: str 
     content: str

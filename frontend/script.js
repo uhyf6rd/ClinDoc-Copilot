@@ -1,16 +1,15 @@
-// --- Configuration ---
+
 const API_BASE_AUDIO = 'http://localhost:8000/api';
 const API_BASE_AGENT = 'http://localhost:8001/api';
 
-// FEATURE TOGGLES
-// Make it var so it's globally accessible
+
 var appSettings = {
     autoSummary: true,
     ghostText: true,
     terminology: true
 };
 
-// METRICS TRACKING
+
 let usageMetrics = {
     startTime: 0,
     ghostCount: 0,
@@ -18,23 +17,19 @@ let usageMetrics = {
     manualChars: 0,
     deletedChars: 0
 };
-let fieldLastValues = new Map(); // Store last valid value for each field to calc diff
-let isGhostInsertion = false; // Flag to ignore ghost text insertion in manual stats
+let fieldLastValues = new Map(); 
+let isGhostInsertion = false; 
 
-// ====================================================================
-// --- UI Logic ---
-
-// Tab Switching
 function switchTab(tabName) {
-    // Hide all contents
+
     document.getElementById('tab-record').classList.add('hidden');
     document.getElementById('tab-chat').classList.add('hidden');
     document.getElementById('tab-settings').classList.add('hidden');
 
-    // Show selected
+
     document.getElementById(`tab-${tabName}`).classList.remove('hidden');
 
-    // Update headers
+
     const tabs = document.querySelectorAll('.tab-item');
     tabs.forEach(t => t.classList.remove('active'));
 
@@ -43,7 +38,6 @@ function switchTab(tabName) {
     if (tabName === 'settings') tabs[2].classList.add('active');
 }
 
-// Auto-resize Textareas
 document.querySelectorAll('textarea').forEach(el => {
     el.addEventListener('input', function () {
         this.style.height = 'auto';
@@ -51,7 +45,7 @@ document.querySelectorAll('textarea').forEach(el => {
     });
 });
 
-// Initialize Settings Toggles
+
 function initSettings() {
     const aiToggle = document.getElementById('toggle-ai-summary');
     const ghostToggle = document.getElementById('toggle-ghost-text');
@@ -62,14 +56,14 @@ function initSettings() {
             appSettings.autoSummary = e.target.checked;
             toggleAiSummaryUi(appSettings.autoSummary);
         });
-        // Initial state
+
         toggleAiSummaryUi(appSettings.autoSummary);
     }
     if (ghostToggle) {
         ghostToggle.addEventListener('change', (e) => {
             appSettings.ghostText = e.target.checked;
             if (!appSettings.ghostText) {
-                // Clear all ghost text if disabled
+
                 document.querySelectorAll('.ghost-backdrop').forEach(el => el.innerHTML = '');
                 ghostMap.clear();
             }
@@ -79,7 +73,7 @@ function initSettings() {
         termToggle.addEventListener('change', (e) => {
             appSettings.terminology = e.target.checked;
             if (!appSettings.terminology) {
-                // Clear all underlines if disabled
+
                 document.querySelectorAll('.terminology-underline-layer').forEach(el => el.innerHTML = '');
                 document.querySelectorAll('.terminology-interaction-layer').forEach(el => el.innerHTML = '');
             }
@@ -92,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSettings();
 });
 
-// Helper: Toggle AI Summary UI
+
 function toggleAiSummaryUi(isEnabled) {
     const wrapper = document.getElementById('ai-summary-wrapper');
     if (wrapper) {
@@ -100,14 +94,11 @@ function toggleAiSummaryUi(isEnabled) {
     }
 }
 
-// ====================================================================
-// --- Business Logic ---
 
 async function loadDemoData() {
     const modal = document.getElementById('case-modal');
     const body = document.getElementById('case-modal-body');
 
-    // Toggle visibility
     if (modal.style.display === 'flex') {
         modal.style.display = 'none';
         return;
@@ -149,7 +140,6 @@ async function loadDemoData() {
 function selectCase(gender, age) {
     document.getElementById('p_gender').value = gender;
     document.getElementById('p_age').value = age;
-    // Reset metrics on new case
     resetMetrics();
     closeCaseModal();
 }
@@ -196,10 +186,8 @@ async function submitRecord() {
 
         if (res.ok) {
             const result = await res.json();
-            // User Request: <i class="fa-solid fa-check-circle"></i> for flat icon, no filename
             showToast(`<i class="fa-solid fa-check-circle"></i> 提交成功`, 'success');
 
-            // Stop recording if active and clear UI
             if (typeof isRecording !== 'undefined' && isRecording) {
                 stopRecording();
             }
@@ -227,7 +215,7 @@ function resetMetrics() {
         deletedChars: 0
     };
     fieldLastValues.clear();
-    // Initialize last values
+
     document.querySelectorAll('.paper-input').forEach(el => {
         fieldLastValues.set(el.id, el.value);
     });
@@ -254,27 +242,11 @@ function clearForm() {
         if (badge) badge.classList.add('hidden');
         if (tooltip) tooltip.innerHTML = "";
     });
-    // Also clear ghost text backdrops and AI suggestion badges
-    // if (window.resetGhostState) {
-    //     window.resetGhostState();
-    // } else {
-    //     // Fallback if resetGhostState not loaded yet
-    // fields.forEach(fid => {
-    //     const backdrop = document.getElementById(`gh_${fid}`);
-    //     if (backdrop) backdrop.innerHTML = "";
-    //     const badge = document.getElementById(`sug_${fid}`);
-    //     const tooltip = document.getElementById(`tip_${fid}`);
-    //     if (badge) badge.classList.add('hidden');
-    //     if (tooltip) tooltip.innerHTML = "";
-    // });
-    // }
 
-    // Clear AI Real-time Summary by invoking the existing agent stopper
     if (typeof stopSummaryAgent === 'function') {
         stopSummaryAgent();
     }
-    resetMetrics(); // Reset after clear
-}
+    resetMetrics(); 
 
 function showToast(message, type = 'success') {
     let toast = document.getElementById('toast-notification');
@@ -285,23 +257,17 @@ function showToast(message, type = 'success') {
         document.body.appendChild(toast);
     }
 
-    // Clear existing classes and set new ones
     toast.className = 'toast-notification';
     toast.classList.add(type === 'success' ? 'toast-success' : 'toast-error');
 
     toast.innerHTML = message;
 
-    // Show
     setTimeout(() => toast.classList.add('show'), 10);
 
-    // Hide after 3s
     setTimeout(() => {
         toast.classList.remove('show');
     }, 3000);
 }
-
-// ====================================================================
-// --- Recording Logic ---
 
 let mediaRecorder = null;
 let audioChunks = [];
@@ -311,9 +277,8 @@ let recordingTimerInterval = null;
 let committedText = "";
 let lastFlushTime = 0;
 
-// New Control Variables
-let isRestarting = false;     // Flag to indicate we are auto-restarting for fresh header
-let transcriptionQueue = Promise.resolve(); // Promise chain for serialization
+let isRestarting = false;  
+let transcriptionQueue = Promise.resolve();
 
 async function toggleRecording() {
     const btn = document.getElementById('btn-record');
@@ -329,42 +294,34 @@ async function startRecording() {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
-
-        // Time interval for sending audio to backend (in milliseconds)
-        const sliceTime = 1500; // Currently 1.5 second
+        const sliceTime = 1500; 
         lastFlushTime = Date.now();
         committedText = "";
         window.fullSessionTranscript = "";
 
-        let webmHeader = null; // Local header for CURRENT 10s segment
+        let webmHeader = null;
 
         mediaRecorder.ondataavailable = async (event) => {
             if (event.data.size > 0) {
-                // 1. Capture Header (First chunk of this segment)
                 if (!webmHeader) {
                     webmHeader = event.data;
                     console.log("[Diagnose] New Segment Header Captured:", webmHeader.size);
                 }
 
-                // 2. Accumulate Chunk
                 audioChunks.push(event.data);
                 const currentBlob = new Blob(audioChunks, { type: 'audio/webm' });
-
-                // 3. Queue Transcription (Strict Serialization)
-                // We wrap it in a function to ensure 'currentBlob' is captured correctly
                 transcriptionQueue = transcriptionQueue.then(() => sendAudioToBackend(currentBlob))
                     .catch(e => console.error("Queue Error:", e));
 
-                // 4. Check for Restart (Soft Flush > 10s)
                 const now = Date.now();
                 if (now - lastFlushTime > 10000) {
                     console.log("🔄 [Auto-Restart] Refreshing MediaRecorder to clear header...");
                     isRestarting = true;
-                    // Update committed text with what we have so far (optimistic)
+
                     if (window.fullSessionTranscript) {
                         committedText = window.fullSessionTranscript;
                     }
-                    mediaRecorder.stop(); // This triggers onstop -> restart
+                    mediaRecorder.stop(); 
                     lastFlushTime = now;
                 }
             }
@@ -372,14 +329,14 @@ async function startRecording() {
 
         mediaRecorder.onstop = () => {
             if (isRestarting) {
-                // --- RESTART LOGIC ---
+
                 isRestarting = false;
-                audioChunks = []; // Clear buffer for new segment
-                webmHeader = null; // Reset header
-                mediaRecorder.start(sliceTime); // Start new segment immediately
+                audioChunks = []; 
+                webmHeader = null;
+                mediaRecorder.start(sliceTime);
                 console.log("▶️ [Auto-Restart] MediaRecorder resumed.");
             } else {
-                // --- REAL STOP LOGIC ---
+
                 document.getElementById('btn-record').innerHTML = '开始录音';
                 document.getElementById('btn-record').classList.remove('bg-red-500', 'hover:bg-red-600');
                 document.getElementById('btn-record').classList.add('bg-blue-500', 'hover:bg-blue-600');
@@ -403,7 +360,6 @@ async function startRecording() {
         document.getElementById('record-timer').innerText = "00:00:00";
         recordingTimerInterval = setInterval(updateTimer, 1000);
 
-        // Start summary agent if enabled
         if (appSettings.autoSummary) {
             startSummaryAgent();
         }
@@ -420,12 +376,12 @@ function stopRecording() {
     }
     isRecording = false;
     stopSummaryAgent();
-    clearRecording(); // Reset Audio State
-    clearForm();      // Reset UI & Ghost State
+    clearRecording();
+    clearForm();  
 }
 
 async function sendAudioToBackend(blob) {
-    // Note: No isTranscribing lock needed here because we function call is serialized by transcriptionQueue
+
 
     const formData = new FormData();
     formData.append("file", blob, "chunk.webm");
@@ -440,8 +396,6 @@ async function sendAudioToBackend(blob) {
             const newText = data.text || "";
             console.log("📝 [Transcribed Text]:", newText);
 
-            // Update Global Transcript
-            // Since requests are serialized, we can safely append
             if (newText.trim() || committedText) {
                 window.fullSessionTranscript = committedText + newText;
             }
@@ -454,12 +408,11 @@ async function sendAudioToBackend(blob) {
 function clearRecording() {
     window.fullSessionTranscript = "";
     committedText = "";
-    lastProcessedLength = 0; // Reset summary progress
+    lastProcessedLength = 0;
     document.getElementById('record-timer').innerText = "00:00:00";
     document.querySelector('.input-status').innerText = '录音已暂停';
 }
 
-// --- Summary Logic ---
 let summaryInterval = null;
 let lastProcessedLength = 0;
 let currentSummary = "";
@@ -470,7 +423,7 @@ function startSummaryAgent() {
     summaryInterval = setInterval(async () => {
         if (!isRecording || !appSettings.autoSummary) return;
 
-        const currentVersion = summaryVersion; // Capture version at start
+        const currentVersion = summaryVersion; 
         const fullText = window.fullSessionTranscript || "";
         if (fullText.length > lastProcessedLength) {
             const newText = fullText.substring(lastProcessedLength);
@@ -487,11 +440,11 @@ function startSummaryAgent() {
 
                 if (res.ok) {
                     const data = await res.json();
-                    if (summaryVersion !== currentVersion) return; // Stale request - discard
+                    if (summaryVersion !== currentVersion) return; 
 
                     if (data.updated_summary) {
                         currentSummary = data.updated_summary;
-                        window.currentSummary = currentSummary; // Sync global for completion.js
+                        window.currentSummary = currentSummary;
                         document.getElementById('ai-summary-box').innerText = currentSummary;
                         lastProcessedLength = fullText.length;
                         triggerDraftsForEmptyFields();
@@ -507,12 +460,11 @@ function startSummaryAgent() {
 }
 
 function stopSummaryAgent() {
-    summaryVersion++; // Invalidate pending requests
+    summaryVersion++; 
     clearInterval(summaryInterval);
     updateSummaryStatus("");
-    lastProcessedLength = 0; // Reset summary progress
+    lastProcessedLength = 0; 
 
-    // Clear Summary
     currentSummary = "";
     window.currentSummary = "";
     const box = document.getElementById('ai-summary-box');
@@ -524,9 +476,9 @@ function updateSummaryStatus(msg) {
     if (el) el.innerText = msg;
 }
 
-// Hook functions for debugging/extension
+
 const originalStartRecordingWrapper = startRecording;
-// ... (Logic is already integrated above, removing separate hooks for cleaner code)
+
 
 function updateTimer() {
     if (!recordingStartTime) return;
@@ -537,34 +489,12 @@ function updateTimer() {
     document.getElementById('record-timer').innerText = `${h}:${m}:${s}`;
 }
 
-// ====================================================================
-// --- Ghost Text Logic ---
-// MOVED TO ghost_text.js
-// We need to ensure variables shared with ghost_text.js are accessible.
-// Since this is a global script, top-level vars/lets are global, BUT let/const are not on window.
-// We explicitly attach them to window to be safe for cross-file access if needed, 
-// though separate scripts share scope.
-// However, 'currentSummary' was 'let' and 'isGhostInsertion' was 'let'.
-
-// Expose internal state for ghost_text.js
 window.usageMetrics = usageMetrics;
 window.fieldLastValues = fieldLastValues;
 window.isGhostInsertion = isGhostInsertion;
 window.currentSummary = currentSummary;
 
-// Hook into updates to keep window.XXX in sync if they are reassigned (unlikely for objects, but primitives yes)
-// Actually "isGhostInsertion" is a primitive 'false', so assigning window.isGhostInsertion = isGhostInsertion passes value.
-// We need to change how we declare them or how we access them.
-// Best way: Change their declaration to 'var' or 'window.XXX' at top of file, OR just rely on scope if simple script.
-// But to be robust, let's explicitely use window.XXX in ghost_text.js and here ensure they reflect.
-// Better: ghost_text.js reads window globals. 
-// We will change the top definitions of these variables in a separate step or just here if possible.
-
-// STARTUP
 document.addEventListener('DOMContentLoaded', () => {
-    // Other init...
-    // initGhostText() is defined in ghost_text.js which runs after this script but before DOMContentLoaded fires?
-    // Actually if ghost_text.js is <script> after script.js, it loads and defines initGhostText.
     if (typeof initGhostText === 'function') {
         initGhostText();
     }

@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Medical Record Field Prompts
-专业医学病历字段的 Prompt 模板
-强调：简洁、正式、准确
-"""
-
-# 主诉 (Chief Complaint)
 PROMPT_MAIN_COMPLAINT = """
 根据【对话总结】提取主诉。
 
@@ -22,8 +14,6 @@ PROMPT_MAIN_COMPLAINT = """
 
 输出：
 """
-
-# 现病史 (History of Present Illness)
 PROMPT_HISTORY_PRESENT_ILLNESS = """
 根据【对话总结】提取现病史。
 
@@ -42,7 +32,6 @@ PROMPT_HISTORY_PRESENT_ILLNESS = """
 输出：
 """
 
-# 既往史 (Past History)
 PROMPT_PAST_HISTORY = """
 根据【对话总结】提取既往史。
 
@@ -60,7 +49,6 @@ PROMPT_PAST_HISTORY = """
 输出：
 """
 
-# 体格检查 (Physical Examination)
 PROMPT_PHYSICAL_EXAM = """
 根据【对话总结】提取体格检查结果。
 
@@ -80,7 +68,6 @@ PROMPT_PHYSICAL_EXAM = """
 输出：
 """
 
-# 辅助检查 (Auxiliary Examination)
 PROMPT_AUXILIARY_EXAM = """
 根据【对话总结】提取辅助检查结果。
 
@@ -96,7 +83,6 @@ PROMPT_AUXILIARY_EXAM = """
 输出：
 """
 
-# 诊断 (Diagnosis) - Strict Extraction
 PROMPT_DIAGNOSIS = """
 根据【对话总结】提取医生明确提及的诊断。
 
@@ -112,7 +98,6 @@ PROMPT_DIAGNOSIS = """
 输出：
 """
 
-# 医嘱 (Orders) - Strict Extraction
 PROMPT_ORDERS = """
 根据【对话总结】提取医生明确提及的医嘱。
 
@@ -128,7 +113,6 @@ PROMPT_ORDERS = """
 输出：
 """
 
-# AI 推断-诊断 (Inferred Diagnosis)
 PROMPT_INFERRED_DIAGNOSIS = """
 作为AI医疗助手，请根据【对话总结】推断可能的诊断。
 
@@ -145,7 +129,6 @@ PROMPT_INFERRED_DIAGNOSIS = """
 输出：
 """
 
-# AI 推断-医嘱 (Inferred Orders)
 PROMPT_INFERRED_ORDERS = """
 作为AI医疗助手，请根据【对话总结】和可能的诊断，推断建议的医嘱。
 
@@ -162,7 +145,6 @@ PROMPT_INFERRED_ORDERS = """
 输出：
 """
 
-# 映射字典
 FIELD_PROMPTS = {
     "main_complaint": PROMPT_MAIN_COMPLAINT,
     "history_present_illness": PROMPT_HISTORY_PRESENT_ILLNESS,
