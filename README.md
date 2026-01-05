@@ -10,7 +10,6 @@ ClinDoc-Copilot is a research prototype system designed to assist clinicians in 
 
 ClinDoc Copilot is a physician-centered, human-in-the-loop assistant. It provides conversation-grounded ghost text completion, inline underline feedback for terminology normalization and evidence-grounded traceability, and an on-demand right-side AI dialogue sidebar. All assistance is non-binding and requires explicit physician action to be incorporated into the medical record.
 
-This project is developed for **research and educational purposes only**. It is not intended for clinical deployment and should not be used for actual patient care.
 
 ![Comparison of Different HCI Mode in Chinese Clinical Documentation](assets/small.png)
 *Figure 1. Comparison of Different HCI Mode in Chinese Clinical Documentation.*
@@ -54,16 +53,6 @@ The open-source prototype implements module-specific assistance for common outpa
 
 ---
 
-## Technology Stack
-
-- **Frontend**: Chrome Extension (Manifest V3), vanilla JavaScript
-- **Backend**: Python 3.10+, FastAPI, WebSocket
-- **ASR**: SenseVoice (FunASR) with streaming support
-- **LLM**: OpenAI-compatible API (GPT-4o or equivalent)
-- **Embedding**: (optional) see Future Work
-
----
-
 ## Examples
 
 The main interaction flow is illustrated in the paper figures.
@@ -88,44 +77,45 @@ ClinDoc Copilot provides underline cues to support:
 
 ## Quick Start
 
-### Prerequisites
+### 1. Prerequisites
 
 - Python 3.10+
-- Chrome browser
 - OpenAI API key (or compatible endpoint)
 
-### Backend Setup
+### 2. Environment Setup
 
 ```bash
-cd backend
-
 # Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+conda create -n clindoc python=3.10
+conda activate clindoc
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env to add your API key
-
-# Start server
-python server.py
 ```
 
-### Extension Setup
+### 3. Add API Key
 
-1. Open `chrome://extensions/`
-2. Enable "Developer mode"
-3. Click "Load unpacked" and select the `extension/` folder
-4. Click the extension icon to open the sidepanel
+Go to `backend/utils/openai_tool.py` and modify the following lines with your own API key an Base URL:
 
-### Verification
+```python
+openai.api_key = "your-api-key"
+openai.api_base = "your-api-base-url"
+```
 
-Open `backend/test-copilot-full.html` in Chrome to verify the system is functioning correctly.
+### 4. Start the Service
 
----
+Run the FastAPI server using uvicorn from the project root directory:
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+The server will start on `http://localhost:8000`.
+
+### 5. Access the Application
+
+Open your browser and visit:
+[http://localhost:8000](http://localhost:8000)
 
 ---
 
