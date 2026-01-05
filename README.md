@@ -125,5 +125,3 @@ Open your browser and visit:
 - [LangChain](https://github.com/langchain-ai/langchain) for LLM orchestration utilities
 
 ---
-
-**Note**: This is an active research project. APIs and interfaces may change without notice.
