@@ -247,7 +247,7 @@ function clearForm() {
         stopSummaryAgent();
     }
     resetMetrics(); 
-
+}
 function showToast(message, type = 'success') {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
