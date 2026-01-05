@@ -19,32 +19,6 @@ class TerminologyCheckResponse(BaseModel):
 
 @router.post("/terminology/check", response_model=TerminologyCheckResponse)
 async def check_terminology(req: TerminologyCheckRequest):
-    """
-    检查文本中的术语规范性
-    
-    请求：
-    {
-      "text": "患者肚子疼3天，伴发烧"
-    }
-    
-    响应：
-    {
-      "issues": [
-        {
-          "original": "肚子疼3天",
-          "suggestion": "腹痛3天",
-          "start": 2,
-          "end": 7
-        },
-        {
-          "original": "发烧",
-          "suggestion": "发热",
-          "start": 9,
-          "end": 11
-        }
-      ]
-    }
-    """
     try:
         issues = await terminology_agent.check_terminology(req.text)
         return TerminologyCheckResponse(issues=issues)

@@ -21,16 +21,6 @@ openai.proxy = {
 class GetOpenAI:
     @staticmethod
     def __gpt_api_stream(messages: list, model='gpt-4'):
-        """为提供的对话消息创建新的回答 (流式传输)
-
-            gpt4长问题需要用流式传输，不然容易报错
-        Args:
-            messages (list): 完整的对话消息
-            api_key (str): OpenAI API 密钥
-
-        Returns:
-            tuple: (results, error_desc)
-        """
         completion = {'role': '', 'content': ''}
         try:
             response = openai.ChatCompletion.create(
