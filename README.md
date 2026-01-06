@@ -11,9 +11,6 @@ ClinDoc-Copilot is a research prototype system designed to assist clinicians in 
 ClinDoc Copilot is a physician-centered, human-in-the-loop assistant. It provides conversation-grounded ghost text completion, inline underline feedback for terminology normalization and evidence-grounded traceability, and an on-demand right-side AI dialogue sidebar. All assistance is non-binding and requires explicit physician action to be incorporated into the medical record.
 
 
-![Comparison of Different HCI Mode in Chinese Clinical Documentation](assets/small.png)
-*Figure 1. Comparison of Different HCI Mode in Chinese Clinical Documentation.*
-
 ### Motivation
 
 In Chinese outpatient settings, clinical documentation is a strictly regulated professional activity. Outpatient medical records are legally binding documents subject to routine audits, and physicians bear full legal responsibility for the accuracy, completeness, and clinical validity of documented content.
