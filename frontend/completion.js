@@ -1,10 +1,7 @@
-
-
 let ghostDebounceTimer = null;
 const ghostMap = new Map();
 const touchedFields = new Set();
 const draftQueue = new BoundedRequestQueue(1);
-
 
 function BoundedRequestQueue(concurrency) {
     this.concurrency = concurrency;
@@ -40,7 +37,6 @@ function initGhostText() {
 
         el.addEventListener('input', (e) => {
 
-
             touchedFields.add(el.id);
             clearGhost(el.id);
             syncGhostHeight(el);
@@ -64,6 +60,7 @@ function initGhostText() {
             });
         });
 
+
         el.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
                 if (appSettings.ghostText) {
@@ -85,7 +82,7 @@ function initGhostText() {
 let stateVersion = 0;
 
 window.resetGhostState = function () {
-    stateVersion++;
+    stateVersion++; 
     clearTimeout(ghostDebounceTimer);
     ghostMap.clear();
     touchedFields.clear();
@@ -94,6 +91,7 @@ window.resetGhostState = function () {
     fields.forEach(fid => {
 
         renderGhost(fid, "", "");
+
     });
     console.log('[GhostText] State Reset (v' + stateVersion + ')');
 };
@@ -108,6 +106,7 @@ function acceptGhost(fieldId, suggestion) {
     const el = document.getElementById(fieldId);
 
     if (typeof isGhostInsertion !== 'undefined') {
+
         window.isGhostInsertion = true;
     }
 
@@ -119,6 +118,9 @@ function acceptGhost(fieldId, suggestion) {
     el.value += suggestion;
     clearGhost(fieldId);
     el.dispatchEvent(new Event('input'));
+    if (typeof window.isGhostInsertion !== 'undefined') {
+        window.isGhostInsertion = false;
+    }
 }
 
 function renderGhost(fieldId, userText, suggestion) {
@@ -128,6 +130,7 @@ function renderGhost(fieldId, userText, suggestion) {
     const el = document.getElementById(fieldId);
     if (!suggestion || !appSettings.ghostText) {
         backdrop.innerHTML = "";
+
         if (el) {
             el.style.height = 'auto';
             el.style.height = el.scrollHeight + 'px';
@@ -175,7 +178,11 @@ function debouncedFetchCompletion(fieldId, text) {
             const res = await fetch(`${API_BASE_AGENT}/agent/complete`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ field_id: fieldId, current_text: text })
+                body: JSON.stringify({
+                    field_id: fieldId,
+                    current_text: text,
+                    summary: window.currentSummary || ""
+                })
             });
             if (res.ok) {
                 const data = await res.json();
@@ -203,6 +210,7 @@ function triggerDraftsForEmptyFields() {
     const fields = ['main_complaint', 'history_present_illness', 'past_history', 'physical_exam', 'auxiliary_exam', 'diagnosis', 'orders'];
     fields.forEach((fid) => {
         const el = document.getElementById(fid);
+
         if (!el || touchedFields.has(fid) || el.value.trim() !== "") return;
 
         const currentVersion = stateVersion;
@@ -225,8 +233,8 @@ function triggerDraftsForEmptyFields() {
                         renderGhost(fid, "", draft);
                     }
 
-
                     if (data.suggestions && data.suggestions.length > 0) {
+
                         if (typeof renderSuggestionsForField === 'function') {
                             renderSuggestionsForField(fid, data.suggestions);
                         }
@@ -239,8 +247,11 @@ function triggerDraftsForEmptyFields() {
 
 function isValidDraft(text) {
     if (!text) return false;
+
     const clean = text.trim().replace(/^['"]+|['"]+$/g, '');
     if (clean.length === 0) return false;
+
+
     const rejectPattern = /空字符串|没有相关信息|无相关信息|无法提取|无法提供|抱歉.*无法|根据对话总结/i;
     if (rejectPattern.test(clean)) return false;
 

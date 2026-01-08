@@ -6,7 +6,6 @@ import os
 
 router = APIRouter()
 
-
 SAVED_DIR = "backend/data/output"
 MEDICAL_CASES_FILE = "backend/data/source/medical.json"
 

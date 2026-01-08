@@ -1,4 +1,3 @@
-
 import numpy as np
 import openai
 import traceback
@@ -10,7 +9,7 @@ import re
 DEBUG = False
 
 openai.api_key = "sk-..." 
-openai.api_base = "https:..."
+openai.api_base = "..."
 
 openai.proxy = {
     "http": None,
@@ -28,6 +27,7 @@ class GetOpenAI:
                 messages=messages,
                 stream=False,
             )
+
             msg = response.choices[0].message.content
             return (True, msg)
         except Exception as err:
@@ -40,11 +40,10 @@ class GetOpenAI:
         messages = [{"role": "system", "content": "You are a helpful assistant."},
                     {'role': 'user', 'content': input_msg}]
         for _ in range(3):
-            ret, out_msg = self.__gpt_api_stream(messages, model=model) 
+            ret, out_msg = self.__gpt_api_stream(messages, model=model)
             if ret:
                 break
             else:
-
                 time.sleep(1)
 
         return ret, out_msg

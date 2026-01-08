@@ -5,24 +5,28 @@ import functools
 
 class CompletionAgent:
     def __init__(self):
-
         self.openai_tool = GetOpenAI()
-
+        
         self.complete_prompt = """
 你是一个电子病历自动补全助手。医生正在填写【{field_name}】。
+
+【对话总结】（上下文参考）：
+{summary}
+
 当前已输入内容如下：
 "{full_text}"
 
-请根据上下文，预测接下来可能输入的 3-10 个字。
-只要预测接下来的内容，不要重复已有的内容。
-如果当前句子完整且无需补充，返回空字符串。
+请根据【对话总结】和当前输入，预测接下来可能输入的 3-10 个字。
+严格要求：
+1. **只能**根据【对话总结】中已有的信息进行补全，**严禁**捏造对话中未提及的症状或数值。
+2. 只要预测接下来的内容，不要重复已有的内容。
+3. 如果当前句子完整且无需补充，或者总结中没有更多相关信息，返回空字符串。
 
 返回格式：仅返回补全的文本片段。
 """
 
     async def generate_draft(self, summary: str, field_id: str) -> str:
         from backend.utils.completion_prompts import FIELD_PROMPTS
-        
         prompt_template = FIELD_PROMPTS.get(field_id)
         if not prompt_template:
             print(f"Warning: No prompt found for field '{field_id}'")
@@ -30,6 +34,7 @@ class CompletionAgent:
         
         try:
             prompt_text = prompt_template.format(summary=summary)
+
             import time
             start_time = time.time()
             loop = asyncio.get_running_loop()
@@ -51,7 +56,10 @@ class CompletionAgent:
             return ""
  
     async def generate_suggestions(self, summary: str, field_id: str) -> list:
-        from backend.utils.completion_prompts import FIELD_PROMPTS
+        """
+        Generates AI inferred suggestions for specific fields (diagnosis, orders).
+        """
+        from backend.utils.completion_prompts import FIELD_PROMPT
         inference_key = f"inferred_{field_id}"
         prompt_template = FIELD_PROMPTS.get(inference_key)
         
@@ -60,6 +68,7 @@ class CompletionAgent:
             
         try:
             prompt_text = prompt_template.format(summary=summary)
+
             loop = asyncio.get_running_loop()
             success, res = await loop.run_in_executor(
                 None, 
@@ -79,14 +88,18 @@ class CompletionAgent:
             print(f"Suggestion Error: {e}")
             return []
 
-    async def complete_text(self, field_id: str, current_text: str) -> str:
+    async def complete_text(self, field_id: str, current_text: str, summary: str = "") -> str:
+        """
+        Completes the text based on current cursor context.
+        """
         if not current_text:
             return ""
             
         try:
             prompt_text = self.complete_prompt.format(
                 field_name=field_id,
-                full_text=current_text
+                full_text=current_text,
+                summary=summary if summary else "暂无上下文"
             )
             import time
             start_time = time.time()
@@ -102,6 +115,7 @@ class CompletionAgent:
             
             print(f"[Profiling] Completion Time ({field_id}): {duration:.4f}s")
             completion = res.replace(current_text, "").strip()
+            
             if completion.startswith(current_text):
                 completion = completion[len(current_text):]
                 

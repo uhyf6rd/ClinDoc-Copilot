@@ -8,6 +8,7 @@ from typing import List, Dict, Optional
 class TerminologyAgent:
     def __init__(self):
         self.openai_tool = GetOpenAI()
+
         self.cache = {}
 
         self.terminology_map = {
@@ -106,7 +107,7 @@ class TerminologyAgent:
             return []
         
         print(f"[Terminology] Checking text: '{text}' (length: {len(text)})")
-
+        
         text_hash = self._compute_hash(text)
         if text_hash in self.cache:
             print(f"[Cache Hit] {text_hash[:8]}")
@@ -138,7 +139,6 @@ class TerminologyAgent:
                 return []
 
             try:
-
                 response = response.strip()
                 if "```json" in response:
                     response = response.split("```json")[1].split("```")[0].strip()
@@ -166,7 +166,6 @@ class TerminologyAgent:
             return []
     
     def _repair_positions(self, text: str, issues: List[Dict]) -> List[Dict]:
-
         repaired = []
         
         for issue in issues:
@@ -177,16 +176,14 @@ class TerminologyAgent:
             
             if not original or not suggestion:
                 continue
-            
 
             if original == suggestion:
                 continue
-            
+
             if start >= 0 and end <= len(text):
                 if text[start:end] == original:
                     repaired.append(issue)
                     continue
-            
 
             pos = text.find(original)
             if pos != -1:
@@ -194,19 +191,17 @@ class TerminologyAgent:
                 issue["end"] = pos + len(original)
                 repaired.append(issue)
                 continue
-            
 
             print(f"[Position Repair Failed] Original: {original}")
         
         return repaired
 
     async def correct_text(self, text: str) -> str:
-
         if not text:
             return text
             
         issues = await self.check_terminology(text)
-
+        
         issues.sort(key=lambda x: x["start"], reverse=True)
         
         corrected_text = list(text)
@@ -214,10 +209,10 @@ class TerminologyAgent:
             start = issue["start"]
             end = issue["end"]
             suggestion = issue["suggestion"]
-
+            
             if start < 0 or end > len(text) or start >= end:
                 continue
-
+            
             corrected_text[start:end] = list(suggestion)
             
         return "".join(corrected_text)

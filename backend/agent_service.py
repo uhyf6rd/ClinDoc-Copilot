@@ -3,8 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.api import agent
 
 app = FastAPI(title="Med Copilot Agent Service (Port 8001)")
-
-
 origins = ["*"]
 
 app.add_middleware(
@@ -14,7 +12,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 app.include_router(agent.router, prefix="/api/agent", tags=["agent"])
 

@@ -8,7 +8,6 @@ import os
 
 app = FastAPI(title="Med Copilot Backend")
 
-
 class EndpointLogFilter(logging.Filter):
     def __init__(self):
         super().__init__()
@@ -17,9 +16,7 @@ class EndpointLogFilter(logging.Filter):
         self.draft_counts = 0
 
     def filter(self, record: logging.LogRecord) -> bool:
-
         log_msg = record.getMessage()
-        
 
         if "/api/status" in log_msg:
             self.status_counts += 1
@@ -32,7 +29,6 @@ class EndpointLogFilter(logging.Filter):
         if "/api/agent/draft" in log_msg:
             self.draft_counts += 1
             return self.draft_counts % 10 == 1 
-            
         return True
 
 import subprocess
@@ -45,10 +41,10 @@ async def startup_event():
 
     logger = logging.getLogger("uvicorn.access")
     logger.addFilter(EndpointLogFilter())
-    
 
     global agent_process
     try:
+
         print("Starting Agent Service subprocess (module: backend.agent_service)...")
         agent_process = subprocess.Popen([sys.executable, "-m", "backend.agent_service"])
     except Exception as e:
@@ -76,7 +72,6 @@ app.include_router(records.router, prefix="/api/records", tags=["records"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(audio.router, prefix="/api/audio", tags=["audio"])
 app.include_router(terminology.router, prefix="/api", tags=["terminology"])
-
 
 @app.get("/api/status")
 def health_check():

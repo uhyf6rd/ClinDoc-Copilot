@@ -13,7 +13,6 @@ class SummaryResponse(BaseModel):
 
 @router.post("/summary", response_model=SummaryResponse)
 async def update_summary(request: SummaryRequest):
-
     try:
         updated_text = await summary_agent.summarize(
             current_summary=request.current_summary,
@@ -24,8 +23,6 @@ async def update_summary(request: SummaryRequest):
         print(f"API Error: {e}")
         return SummaryResponse(updated_summary=request.current_summary)
 
-
-
 from backend.agents.completion_agent import completion_agent
 
 class DraftRequest(BaseModel):
@@ -35,14 +32,14 @@ class DraftRequest(BaseModel):
 class CompletionRequest(BaseModel):
     field_id: str
     current_text: str
+    summary: str = ""
 
 @router.post("/draft")
 async def generate_draft(req: DraftRequest):
-
     draft_text = await completion_agent.generate_draft(req.summary, req.field_id)
     
     response = {"draft": draft_text, "suggestions": []}
-
+    
     if req.field_id in ["diagnosis", "orders"]:
         suggestions = await completion_agent.generate_suggestions(req.summary, req.field_id)
         response["suggestions"] = suggestions
@@ -51,5 +48,5 @@ async def generate_draft(req: DraftRequest):
 
 @router.post("/complete")
 async def complete_text(req: CompletionRequest):
-    text = await completion_agent.complete_text(req.field_id, req.current_text)
+    text = await completion_agent.complete_text(req.field_id, req.current_text, req.summary)
     return {"completion": text}

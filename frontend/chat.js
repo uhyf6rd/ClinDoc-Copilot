@@ -1,4 +1,3 @@
-
 console.log('[Chat] Initialized');
 
 (function () {
@@ -30,12 +29,13 @@ console.log('[Chat] Initialized');
 
         if (!text) return;
 
-
         appendMessage('user', text);
         chatInput.value = '';
 
+
         try {
             console.log('Calling API...');
+
 
             const loadingId = showLoading();
 
@@ -44,6 +44,7 @@ console.log('[Chat] Initialized');
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ role: 'user', content: text })
             });
+
 
             removeLoading(loadingId);
 
@@ -57,7 +58,6 @@ console.log('[Chat] Initialized');
             }
         } catch (error) {
             console.error('Chat error:', error);
-
             const existingLoading = document.getElementById('chat-loading-indicator');
             if (existingLoading) existingLoading.remove();
 
@@ -68,7 +68,7 @@ console.log('[Chat] Initialized');
     function showLoading() {
         const id = 'chat-loading-indicator';
         const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-message assistant`;
+        msgDiv.className = `chat-message assistant`; 
         msgDiv.id = id;
 
         const bubble = document.createElement('div');
@@ -109,7 +109,7 @@ console.log('[Chat] Initialized');
         if (role === 'assistant') {
             typeWriter(bubble, text);
         } else {
-            bubble.innerText = text;
+            bubble.innerText = text; 
             scrollToBottom();
         }
     }
@@ -117,7 +117,6 @@ console.log('[Chat] Initialized');
     function typeWriter(element, text, index = 0, currentText = '') {
         if (index < text.length) {
             currentText += text.charAt(index);
-
             element.innerHTML = marked.parse(currentText);
 
 

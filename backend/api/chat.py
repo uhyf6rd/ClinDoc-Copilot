@@ -8,7 +8,6 @@ openai_tool = GetOpenAI()
 
 @router.post("/message", response_model=ChatMessage)
 def chat(message: ChatMessage):
-
     success, response_text = openai_tool.get_respons(message.content)
     
     if not success:

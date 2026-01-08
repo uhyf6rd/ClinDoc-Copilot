@@ -1,4 +1,3 @@
-
 function renderSuggestionsForField(fid, suggestions) {
     const badge = document.getElementById(`sug_${fid}`);
     const tooltip = document.getElementById(`tip_${fid}`);
@@ -56,6 +55,7 @@ function renderSuggestionsForField(fid, suggestions) {
                     let cursorLineIdx = lines.length - 1; 
 
                     for (let i = 0; i < lines.length; i++) {
+
                         charCount += lines[i].length + 1;
                         if (charCount > originalSelectionStart) {
                             cursorLineIdx = i;
@@ -68,7 +68,6 @@ function renderSuggestionsForField(fid, suggestions) {
                 }
 
                 const allLines = [...beforeLines, cleanSug, ...afterLines];
-
 
                 let counter = 1;
                 const renumberedLines = allLines.map(line => {
@@ -87,7 +86,6 @@ function renderSuggestionsForField(fid, suggestions) {
 
                 suggestionList.splice(idx, 1);
                 render();
-
                 const insertedLineIdx = beforeLines.length;
                 let newCursorPos = 0;
                 for (let i = 0; i <= insertedLineIdx; i++) {
@@ -99,6 +97,7 @@ function renderSuggestionsForField(fid, suggestions) {
                 if (newCursorPos > area.value.length) newCursorPos = area.value.length;
 
                 area.focus();
+
                 const finalPos = Math.max(0, newCursorPos - 1);
                 area.setSelectionRange(finalPos, finalPos);
             };

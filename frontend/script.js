@@ -1,14 +1,11 @@
-
 const API_BASE_AUDIO = 'http://localhost:8000/api';
 const API_BASE_AGENT = 'http://localhost:8001/api';
-
 
 var appSettings = {
     autoSummary: true,
     ghostText: true,
     terminology: true
 };
-
 
 let usageMetrics = {
     startTime: 0,
@@ -19,6 +16,29 @@ let usageMetrics = {
 };
 let fieldLastValues = new Map(); 
 let isGhostInsertion = false; 
+function initMetricsTracking() {
+    document.querySelectorAll('.paper-input').forEach(el => {
+        fieldLastValues.set(el.id, el.value || "");
+
+        el.addEventListener('input', (e) => {
+            const currentVal = el.value;
+            const lastVal = fieldLastValues.get(el.id) || "";
+            const diff = currentVal.length - lastVal.length;
+
+            if (window.isGhostInsertion) {
+
+            } else {
+                if (diff > 0) {
+                    usageMetrics.manualChars += diff;
+                } else if (diff < 0) {
+                    usageMetrics.deletedChars += Math.abs(diff);
+                }
+            }
+
+            fieldLastValues.set(el.id, currentVal);
+        });
+    });
+}
 
 function switchTab(tabName) {
 
@@ -26,9 +46,7 @@ function switchTab(tabName) {
     document.getElementById('tab-chat').classList.add('hidden');
     document.getElementById('tab-settings').classList.add('hidden');
 
-
     document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-
 
     const tabs = document.querySelectorAll('.tab-item');
     tabs.forEach(t => t.classList.remove('active'));
@@ -44,7 +62,6 @@ document.querySelectorAll('textarea').forEach(el => {
         this.style.height = (this.scrollHeight) + 'px';
     });
 });
-
 
 function initSettings() {
     const aiToggle = document.getElementById('toggle-ai-summary');
@@ -83,9 +100,8 @@ function initSettings() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initSettings();
-    initSettings();
+    initMetricsTracking();
 });
-
 
 function toggleAiSummaryUi(isEnabled) {
     const wrapper = document.getElementById('ai-summary-wrapper');
@@ -94,10 +110,10 @@ function toggleAiSummaryUi(isEnabled) {
     }
 }
 
-
 async function loadDemoData() {
     const modal = document.getElementById('case-modal');
     const body = document.getElementById('case-modal-body');
+
 
     if (modal.style.display === 'flex') {
         modal.style.display = 'none';
@@ -140,6 +156,7 @@ async function loadDemoData() {
 function selectCase(gender, age) {
     document.getElementById('p_gender').value = gender;
     document.getElementById('p_age').value = age;
+
     resetMetrics();
     closeCaseModal();
 }
@@ -246,8 +263,9 @@ function clearForm() {
     if (typeof stopSummaryAgent === 'function') {
         stopSummaryAgent();
     }
-    resetMetrics(); 
+    resetMetrics();
 }
+
 function showToast(message, type = 'success') {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
@@ -257,12 +275,15 @@ function showToast(message, type = 'success') {
         document.body.appendChild(toast);
     }
 
+
     toast.className = 'toast-notification';
     toast.classList.add(type === 'success' ? 'toast-success' : 'toast-error');
 
     toast.innerHTML = message;
 
+
     setTimeout(() => toast.classList.add('show'), 10);
+
 
     setTimeout(() => {
         toast.classList.remove('show');
@@ -277,8 +298,8 @@ let recordingTimerInterval = null;
 let committedText = "";
 let lastFlushTime = 0;
 
-let isRestarting = false;  
-let transcriptionQueue = Promise.resolve();
+let isRestarting = false;    
+let transcriptionQueue = Promise.resolve(); 
 
 async function toggleRecording() {
     const btn = document.getElementById('btn-record');
@@ -294,22 +315,27 @@ async function startRecording() {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
+
+
         const sliceTime = 1500; 
         lastFlushTime = Date.now();
         committedText = "";
         window.fullSessionTranscript = "";
 
-        let webmHeader = null;
+        let webmHeader = null; 
 
         mediaRecorder.ondataavailable = async (event) => {
             if (event.data.size > 0) {
+
                 if (!webmHeader) {
                     webmHeader = event.data;
                     console.log("[Diagnose] New Segment Header Captured:", webmHeader.size);
                 }
 
+
                 audioChunks.push(event.data);
                 const currentBlob = new Blob(audioChunks, { type: 'audio/webm' });
+
                 transcriptionQueue = transcriptionQueue.then(() => sendAudioToBackend(currentBlob))
                     .catch(e => console.error("Queue Error:", e));
 
@@ -317,7 +343,6 @@ async function startRecording() {
                 if (now - lastFlushTime > 10000) {
                     console.log("🔄 [Auto-Restart] Refreshing MediaRecorder to clear header...");
                     isRestarting = true;
-
                     if (window.fullSessionTranscript) {
                         committedText = window.fullSessionTranscript;
                     }
@@ -333,7 +358,7 @@ async function startRecording() {
                 isRestarting = false;
                 audioChunks = []; 
                 webmHeader = null;
-                mediaRecorder.start(sliceTime);
+                mediaRecorder.start(sliceTime); 
                 console.log("▶️ [Auto-Restart] MediaRecorder resumed.");
             } else {
 
@@ -371,13 +396,25 @@ async function startRecording() {
 }
 
 function stopRecording() {
+    isRestarting = false; 
+    
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
         mediaRecorder.stop();
+    } else {
+
+        document.getElementById('btn-record').innerHTML = '开始录音';
+        document.getElementById('btn-record').classList.remove('bg-red-500', 'hover:bg-red-600');
+        document.getElementById('btn-record').classList.add('bg-blue-500', 'hover:bg-blue-600');
+        document.querySelector('.input-status').innerText = '录音已结束';
+        if (recordingTimerInterval) {
+            clearInterval(recordingTimerInterval);
+        }
     }
+    
     isRecording = false;
     stopSummaryAgent();
-    clearRecording();
-    clearForm();  
+    clearRecording(); 
+    clearForm(); 
 }
 
 async function sendAudioToBackend(blob) {
@@ -408,10 +445,11 @@ async function sendAudioToBackend(blob) {
 function clearRecording() {
     window.fullSessionTranscript = "";
     committedText = "";
-    lastProcessedLength = 0;
+    lastProcessedLength = 0; 
     document.getElementById('record-timer').innerText = "00:00:00";
     document.querySelector('.input-status').innerText = '录音已暂停';
 }
+
 
 let summaryInterval = null;
 let lastProcessedLength = 0;
@@ -444,7 +482,7 @@ function startSummaryAgent() {
 
                     if (data.updated_summary) {
                         currentSummary = data.updated_summary;
-                        window.currentSummary = currentSummary;
+                        window.currentSummary = currentSummary; 
                         document.getElementById('ai-summary-box').innerText = currentSummary;
                         lastProcessedLength = fullText.length;
                         triggerDraftsForEmptyFields();
@@ -465,6 +503,7 @@ function stopSummaryAgent() {
     updateSummaryStatus("");
     lastProcessedLength = 0; 
 
+
     currentSummary = "";
     window.currentSummary = "";
     const box = document.getElementById('ai-summary-box');
@@ -475,7 +514,6 @@ function updateSummaryStatus(msg) {
     const el = document.getElementById('summary-status');
     if (el) el.innerText = msg;
 }
-
 
 const originalStartRecordingWrapper = startRecording;
 

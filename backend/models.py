@@ -7,7 +7,7 @@ class UsageMetrics(BaseModel):
     ghost_text_chars: int = 0
     manual_input_chars: int = 0
     deleted_chars: int = 0
-    total_chars: int = 0
+    total_chars: int = 0  
 
 class MedicalRecord(BaseModel):
     gender: str = ""

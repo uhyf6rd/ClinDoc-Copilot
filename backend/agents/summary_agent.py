@@ -4,6 +4,7 @@ import functools
 
 class DialogueSummaryAgent:
     def __init__(self):
+        # Use Custom Tool
         self.openai_tool = GetOpenAI()
         
         self.prompt_template = """
@@ -17,11 +18,12 @@ class DialogueSummaryAgent:
 {new_dialogue}
 
 **指令**：
-1. 识别【新增对话片段】中的关键医疗信息（如症状、病史、诊断、用药）。
+1. 识别【新增对话片段】中的关键医疗信息（如症状、病史、诊断、用药、医嘱等）。
 2. 将这些新信息整合进【当前总结】中。
 3. 保持总结简洁、专业（使用医学术语）。
 4. 如果新增对话没有包含任何医疗信息（例如寒暄、噪音），请原样返回【当前总结】，仅当有新信息时才修改。
-5. **直接返回更新后的总结内容**，不要包含"【当前总结】："、"总结："等任何标题或前缀，只输出纯文本内容。
+5. 如果之前的总结中包含“医生建议做某检查”的内容，而【新增对话片段】或已有信息中包含了该检查的结果，请在更新后的总结中**删除**“建议做该检查”的相关描述，只保留检查结果。
+6. **直接返回更新后的总结内容**，不要包含"【当前总结】："、"总结："等任何标题或前缀，只输出纯文本内容。
 """
 
     async def summarize(self, current_summary: str, new_dialogue: str) -> str:
@@ -29,12 +31,16 @@ class DialogueSummaryAgent:
             return current_summary
             
         try:
+
             if not current_summary:
                 current_summary = "暂无总结。"
+                
+
             prompt_text = self.prompt_template.format(
                 current_summary=current_summary,
                 new_dialogue=new_dialogue
             )
+            
             import time
             start_time = time.time()
             loop = asyncio.get_running_loop()

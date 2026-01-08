@@ -23,79 +23,79 @@
 
     <div class="grid grid-cols-[1fr_400px] h-screen p-6 gap-6">
 
-        <div class="overflow-y-auto pr-2">
+        <div class="overflow-y-auto pr-2 pb-24">
             <div class="paper-container">
-                <div class="paper-title">初诊病历记录</div>
+                <div class="paper-title">初诊病历记录（Initial Visit Record）</div>
                 <div class="paper-line"></div>
 
                 <div class="flex mb-4 gap-32">
                     <div class="flex items-center gap-2">
-                        <span class="paper-label" style="margin-bottom: 0;">性 别:</span>
+                        <span class="paper-label" style="margin-bottom: 0;">性 别（Gender）:</span>
                         <input id="p_gender" type="text" class="paper-input text-center" style="width: 120px;">
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="paper-label" style="margin-bottom: 0;">年 龄:</span>
+                        <span class="paper-label" style="margin-bottom: 0;">年 龄（Age）:</span>
                         <input id="p_age" type="text" class="paper-input text-center" style="width: 120px;">
                     </div>
                 </div>
 
-                <div class="paper-label">主诉：</div>
+                <div class="paper-label">主诉（Chief Complaint）：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_main_complaint" class="ghost-backdrop"></div>
                     <textarea id="main_complaint" rows="1" class="paper-input w-full"></textarea>
                 </div>
 
-                <div class="paper-label mt-4">现病史：</div>
+                <div class="paper-label mt-4">现病史（History of Present Illness）：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_history_present_illness" class="ghost-backdrop"></div>
                     <textarea id="history_present_illness" rows="2" class="paper-input w-full"></textarea>
                 </div>
 
-                <div class="paper-label mt-4">既往史：</div>
+                <div class="paper-label mt-4">既往史（Past Medical History）：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_past_history" class="ghost-backdrop"></div>
                     <textarea id="past_history" rows="1" class="paper-input w-full"></textarea>
                 </div>
 
-                <div class="paper-label mt-4">体格检查：</div>
+                <div class="paper-label mt-4">体格检查（Physical Exam）：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_physical_exam" class="ghost-backdrop"></div>
                     <textarea id="physical_exam" rows="2" class="paper-input w-full"></textarea>
                 </div>
 
-                <div class="paper-label mt-4">辅助检查：</div>
+                <div class="paper-label mt-4">辅助检查（Laboratory and Imaging Studies）：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_auxiliary_exam" class="ghost-backdrop"></div>
                     <textarea id="auxiliary_exam" rows="2" class="paper-input w-full"></textarea>
                 </div>
 
-                <div class="paper-label mt-4">诊断：</div>
+                <div class="paper-label mt-4">诊断（Diagnosis）：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_diagnosis" class="ghost-backdrop"></div>
                     <textarea id="diagnosis" rows="3" class="paper-input w-full"></textarea>
 
                     <div id="sug_diagnosis" class="ai-suggestion-badge hidden">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span class="badge-text">AI 诊断</span>
+                        <span class="badge-text">AI 诊断（AI Diagnosis）</span>
                         <div class="suggestion-tooltip" id="tip_diagnosis"></div>
                     </div>
                 </div>
 
-                <div class="paper-label mt-4">医嘱：</div>
+                <div class="paper-label mt-4">医嘱（Orders）：</div>
                 <div class="ghost-wrapper">
                     <div id="gh_orders" class="ghost-backdrop"></div>
                     <textarea id="orders" rows="4" class="paper-input w-full"></textarea>
 
                     <div id="sug_orders" class="ai-suggestion-badge hidden">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span class="badge-text">AI 医嘱</span>
+                        <span class="badge-text">AI 医嘱（AI Orders）</span>
                         <div class="suggestion-tooltip" id="tip_orders"></div>
                     </div>
                 </div>
 
             </div>
 
-            <div class="h-20"></div>
+
         </div>
 
 
@@ -103,24 +103,27 @@
 
             <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-white">
                 <div class="font-bold text-gray-800 text-lg">
-                    <i class="fa-solid fa-robot text-blue-500 mr-2"></i>病历 Copilot
+                    <i class="fa-solid fa-robot text-blue-500 mr-2"></i>病历 Copilot（Medical AI Copilot）
                 </div>
             </div>
 
             <div class="px-5 py-3 flex gap-3 bg-gray-50 border-b border-gray-100">
                 <button onclick="loadDemoData()" class="action-btn btn-secondary flex-1">
-                    <i class="fa-solid fa-folder-open"></i> 打开病例
+                    <i class="fa-solid fa-folder-open"></i> 打开病例（Open Case）
                 </button>
                 <button onclick="submitRecord()" class="action-btn btn-primary flex-1">
-                    <i class="fa-solid fa-paper-plane"></i> 提交
+                    <i class="fa-solid fa-paper-plane"></i> 提交（Submit）
                 </button>
             </div>
 
             <div class="tab-header">
                 <div class="tab-item active" onclick="switchTab('record')"><i
-                        class="fa-solid fa-microphone mr-1"></i>录音转录</div>
-                <div class="tab-item" onclick="switchTab('chat')"><i class="fa-regular fa-comments mr-1"></i>AI 对话</div>
-                <div class="tab-item" onclick="switchTab('settings')"><i class="fa-solid fa-gear mr-1"></i>设置</div>
+                        class="fa-solid fa-microphone mr-1"></i>录音转录（Speech-to-Text）</div>
+                <div class="tab-item" onclick="switchTab('chat')"><i class="fa-regular fa-comments mr-1"></i>AI 对话<p>
+                    </p>（AI Chat）</div>
+                <div class="tab-item" onclick="switchTab('settings')"><i class="fa-solid fa-gear mr-1"></i>设置<p>
+                    </p>（Settings）
+                </div>
             </div>
 
             <div id="tab-record" class="p-5 flex-1 overflow-y-auto">
@@ -129,7 +132,7 @@
                     <div>
                         <div
                             class="font-bold text-blue-900 text-lg flex items-center input-status justify-center text-center w-full">
-                            录音已暂停
+                            录音已暂停（Recording Paused）
                         </div>
                         <div id="record-timer" class="text-blue-400 font-mono mt-1 text-center w-full">00:00:00</div>
                     </div>
@@ -138,7 +141,7 @@
                 <div class="flex gap-3 mb-6">
                     <button id="btn-record" onclick="toggleRecording()"
                         class="w-full bg-blue-500 text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition">
-                        开始录音
+                        开始录音（Start Recording）
                     </button>
                 </div>
 
@@ -147,17 +150,17 @@
 
                 <div id="ai-summary-wrapper">
                     <div class="text-sm text-blue-500 font-medium mb-2 uppercase tracking-wide flex justify-between">
-                        <span>AI 实时总结</span>
+                        <span>AI 实时总结（AI Real-time Summary）</span>
                         <span id="summary-status" class="text-xs font-normal text-gray-400"></span>
                     </div>
                     <div id="ai-summary-box"
                         class="bg-blue-50 text-blue-900 text-sm leading-relaxed min-h-[30px] border border-blue-100 rounded-lg p-3">
-                        等待对话自动总结...
+                        等待对话自动总结...（Waiting for automatic summary...）
                     </div>
                 </div>
             </div>
 
- 
+
             <div id="tab-chat" class="hidden flex-1 flex flex-col relative h-full min-h-0">
                 <div class="flex-1 overflow-y-auto p-4 min-h-0" id="chat-history">
 
@@ -169,7 +172,7 @@
                             class="flex-1 bg-gray-50 border border-gray-200 rounded-lg py-2 px-4 outline-none focus:border-blue-400 text-sm focus:bg-white transition-colors">
                         <button id="chat-send-btn"
                             class="bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 active:transform active:scale-95 transition-all shadow-sm">
-                            发送
+                            发送（Send）
                         </button>
                     </div>
                 </div>
@@ -203,12 +206,12 @@
 
             <div id="case-modal" class="case-modal">
                 <div class="case-modal-header">
-                    <span>实验病例选择</span>
+                    <span>实验病例选择（Demo Case Selection）</span>
                     <i class="fa-solid fa-xmark close-modal-btn" onclick="closeCaseModal()"></i>
                 </div>
                 <div id="case-modal-body" class="case-modal-body">
 
-                    <div class="p-4 text-center text-gray-400 text-sm">正在加载病例...</div>
+                    <div class="p-4 text-center text-gray-400 text-sm">正在加载病例...（Loading cases...）</div>
                 </div>
             </div>
 

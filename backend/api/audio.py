@@ -10,7 +10,6 @@ import subprocess
 
 router = APIRouter()
 
-
 print("Loading SenseVoiceSmall model...")
 try:
     asr_model = AutoModel(
@@ -31,12 +30,11 @@ def process_audio_file(temp_path: str, filename_for_ext: str):
     if not model:
          return {"text": ""}
 
-
     processing_path = temp_path
 
     start_time = time.time()
     try:
-        res = model.generate([processing_path], disable_pbar=True)
+        res = model.generate([processing_path], language="zh", use_itn=True, disable_pbar=True)
     except Exception as e:
         print(f"Inference Error: {e}")
         return {"text": ""}
@@ -79,20 +77,17 @@ async def websocket_endpoint(websocket: WebSocket):
     
     try:
         while True:
-
             message = await websocket.receive()
             
             if "bytes" in message and message["bytes"]:
                 data = message["bytes"]
                 if len(data) == 0: continue
 
-
                 temp_filename = f"ws_{uuid.uuid4()}.webm"
                 temp_path = os.path.join(temp_dir, temp_filename)
                 with open(temp_path, "wb") as f:
                     f.write(data)
                 
-
                 loop = asyncio.get_running_loop()
                 result = await loop.run_in_executor(None, process_audio_file, temp_path, temp_filename)
 
@@ -101,7 +96,6 @@ async def websocket_endpoint(websocket: WebSocket):
             elif "text" in message and message["text"]:
 
                 if message["text"] == "ping":
-
                     continue
             
     except WebSocketDisconnect:

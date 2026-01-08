@@ -1,16 +1,16 @@
-
-let debounceTimers = new Map(); 
+let debounceTimers = new Map();
 let maxWaitTimers = new Map();  
 let tooltipHideTimer = null; 
 let lastCheckTime = new Map(); 
 const CHECK_INTERVAL = 3000; 
-const terminologyIssuesMap = new Map(); 
-const ignoredIssuesMap = new Map();
+const terminologyIssuesMap = new Map();
+const ignoredIssuesMap = new Map(); 
 
 document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('.paper-input');
 
     inputs.forEach(el => {
+
         el.addEventListener('input', () => {
             debouncedCheckTerminology(el.id, el.value);
         });
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function debouncedCheckTerminology(fieldId, text) {
     if (!text || text.trim().length < 2) {
+
         if (debounceTimers.has(fieldId)) {
             clearTimeout(debounceTimers.get(fieldId));
             debounceTimers.delete(fieldId);
@@ -91,6 +92,7 @@ async function performTerminologyCheck(fieldId, text) {
 
         if (res.ok) {
             const data = await res.json();
+
 
             const currentEl = document.getElementById(fieldId);
             if (currentEl && currentEl.value !== text) {
@@ -166,7 +168,9 @@ function renderTerminologyUnderlines(fieldId) {
             interactionHtml += normalText;
         }
 
+
         underlineHtml += `<span class="term-underline">${escapeHtml(text.substring(start, end))}</span>`;
+
 
         interactionHtml += `<span class="term-interactive" data-start="${start}" data-end="${end}">${escapeHtml(text.substring(start, end))}</span>`;
 
@@ -214,7 +218,7 @@ function renderTerminologyUnderlines(fieldId) {
             tooltipHideTimer = setTimeout(() => {
                 removeAllHighlights(underlineLayer, interactionLayer);
                 hideTerminologyTooltip();
-            }, 200);
+            }, 200); 
         });
     });
 }
@@ -255,7 +259,7 @@ function removeAllHighlights(underlineLayer, interactionLayer) {
 }
 
 function showTerminologyTooltip(el, issue, e) {
-    hideTerminologyTooltip();
+    hideTerminologyTooltip(); 
 
     const tooltip = document.createElement('div');
     tooltip.id = 'terminology-tooltip';
@@ -270,7 +274,6 @@ function showTerminologyTooltip(el, issue, e) {
     `;
 
     document.body.appendChild(tooltip);
-
 
     const interactionLayer = document.getElementById(`term_interact_${el.id}`);
     const highlightedSpan = interactionLayer?.querySelector('.term-highlighted');
@@ -296,7 +299,6 @@ function showTerminologyTooltip(el, issue, e) {
         tooltip.style.top = top + 'px';
     }
 
-
     tooltip.querySelector('.term-tooltip-suggestion').addEventListener('click', handleApplySuggestion);
     tooltip.querySelector('.term-tooltip-ignore').addEventListener('click', handleIgnoreSuggestion);
 
@@ -311,7 +313,7 @@ function showTerminologyTooltip(el, issue, e) {
     tooltip.addEventListener('mouseleave', () => {
 
         hideTerminologyTooltip();
-        removeAllHighlights(); 
+        removeAllHighlights();
     });
 }
 
@@ -404,12 +406,11 @@ function handleIgnoreSuggestion(e) {
 }
 
 function getCursorPositionFromMouse(el, e) {
-
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top + el.scrollTop;
 
-    const charWidth = 14; 
+    const charWidth = 14;
     const lineHeight = 24; 
 
     const line = Math.floor(y / lineHeight);
